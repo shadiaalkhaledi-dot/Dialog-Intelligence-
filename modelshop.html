@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<!-- The Charrette — the firm's direction, rendered live from assets/rooms-payload.js: the ideas ahead
+     of the built tools, at every stage. Narrated by Feynman (Cherenkov blue) — he keeps the list of owed decisions. -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DIALOG Intelligence — The Charrette</title>
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .nar-caret{background:#3fc6ff !important;}
+  .nar-pop{border-left-color:#3fc6ff !important;background:var(--cheren-wash) !important;}
+  .shop{max-width:720px;margin:26px auto 0;padding:0 28px;}
+  .shop-meta{text-align:center;font-size:.84rem;color:var(--ink-faint);margin:0 0 18px;}
+  .model{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px 26px 16px;}
+  .model + .model{margin-top:18px;}
+  .model.dashed{border-style:dashed;}
+  .model h3{margin-bottom:4px;}
+  .model .m-meta{margin-bottom:12px;}
+  .m-row{margin:0 0 11px;font-size:.92rem;line-height:1.68;color:var(--ink-soft);}
+  .m-row b{display:block;font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:2px;}
+</style>
+</head>
+<body>
+
+<div class="hairline"></div>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><span class="mark">DI</span> DIALOG Intelligence</a>
+    <div class="nav-links">
+      <a href="studio.html">Studio Floor</a>
+      <a href="pinup.html">Pin-up Wall</a>
+      <a href="modelshop.html" class="active">The Charrette</a>
+      <a href="library.html">Library</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container" style="text-align:center;">
+    <span class="eyebrow">POSTED OUT — LAYER THREE</span>
+    <h1 id="pageH1">The Charrette</h1>
+    <p class="lead" id="pageLead" style="margin-left:auto;margin-right:auto;"></p>
+    <div id="floorplanMount"></div>
+  </div>
+</header>
+
+<div class="shop">
+  <p class="shop-meta" id="shopMeta"></p>
+  <div id="shopMount"></div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>A working record that tells the truth about its own state. Knowledge, not people.</span>
+    <span>Drafted by Shadi &amp; Ben, narrated by Claude. &middot; v2026-07-08.10</span>
+  </div>
+</footer>
+
+<script>
+window.NARRATOR = {
+  page: "modelshop",
+  lines: [
+    "These are the ideas nobody's committed to yet. Dashed lines. Somebody still owes a decision, and I keep the list — not to chase anyone, just so it doesn't get lost.",
+    "Statuses stay honest: in progress means someone's actually working it, shelf means it's parked, promoted means it earned a desk. The abandoned ones stay up too — that's what makes the live directions believable."
+  ],
+  revisit: "The charrette. The list of owed decisions is below — statuses current.",
+  poke: "Careful. Concept models take real dents."
+};
+</script>
+<script src="assets/floorplan.js"></script>
+<script src="assets/rooms-payload.js"></script>
+<script>
+window.renderFloorplan(document.getElementById("floorplanMount"), "modelshop");
+
+(function(){
+  var M = (window.ROOMS_PAYLOAD && window.ROOMS_PAYLOAD.modelshop) || {};
+  var models = M.models || M.shelves || [];
+  if (M.lead) document.getElementById("pageLead").textContent = M.lead;
+  document.getElementById("shopMeta").textContent = models.length + " directions on the board — statuses honest, abandoned ones included.";
+
+  function tagClass(s){
+    s = (s || "").toLowerCase();
+    if (s.indexOf("progress") >= 0) return "amber";
+    if (s.indexOf("promoted") >= 0) return "win";
+    if (s.indexOf("dead") >= 0 || s.indexOf("retired") >= 0 || s.indexOf("abandoned") >= 0) return "fail";
+    return "";
+  }
+  var LABELS = { proposes: "What it proposes", needs: "What it needs", why: "Where it went" };
+  var mount = document.getElementById("shopMount");
+  models.forEach(function(m){
+    var dashed = (m.status || "").toLowerCase().indexOf("progress") < 0;
+    var el = document.createElement("div"); el.className = "model" + (dashed ? " dashed" : "");
+    var html = '<h3></h3><div class="m-meta"><span class="tag ' + tagClass(m.status) + '"></span></div>';
+    ["proposes","needs","why"].forEach(function(k){
+      if (m[k]) html += '<p class="m-row ' + k + '"><b>' + LABELS[k] + '</b><span></span></p>';
+    });
+    el.innerHTML = html;
+    el.querySelector("h3").textContent = m.name;
+    el.querySelector(".m-meta .tag").textContent = m.status || "";
+    ["proposes","needs","why"].forEach(function(k){
+      var row = el.querySelector(".m-row." + k + " span");
+      if (row) row.textContent = m[k];
+    });
+    mount.appendChild(el);
+  });
+})();
+</script>
+<script src="assets/narrator.js"></script>
+
+</body>
+</html>

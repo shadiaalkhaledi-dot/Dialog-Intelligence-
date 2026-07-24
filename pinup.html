@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<!-- Pin-up Wall — the feedback loop itself. Pins render live from assets/rooms-payload.js.
+     What this room is FOR: it's the ritual that keeps the studio honest. In architecture a
+     "pin-up" is where you tack work on a wall and take the critique out loud. BIG ran it
+     firm-wide every two weeks; this is the two-person prototype. A scoreboard, a WIN/FAIL
+     filter, a cadence meter against our own "a month with no FAIL means trouble" rule, and
+     a link from each pin to the desk it became — so the loop is visible, not just claimed.
+     Narrated by Feynman (Cherenkov blue). -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DIALOG Intelligence — Pin-up Wall</title>
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .nar-caret{background:#3fc6ff !important;}
+  .nar-pop{border-left-color:#3fc6ff !important;background:rgba(63,198,255,.07) !important;}
+  .pin-author{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:4px;}
+  .pin-author.amber{background:var(--amber-wash);color:#b45309;}
+  .pin-author.ben,.pin-author.cherenkov{background:var(--cheren-wash);color:#0b7cb5;}
+  .pin-author.shared{background:linear-gradient(90deg,var(--amber-wash),var(--cheren-wash));color:#5d5a52;}
+  .wall{max-width:700px;margin:26px auto 0;padding:0 24px;}
+
+  /* what this room is for */
+  .why{border:1px solid var(--cheren-line);background:var(--cheren-wash);border-radius:12px;padding:16px 20px;margin:0 0 22px;}
+  .why h4{font-size:.66rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--cheren-deep);margin:0 0 8px;}
+  .why p{font-size:.88rem;line-height:1.62;color:#33454e;margin:0;}
+
+  /* scoreboard */
+  .score{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 18px;}
+  .score .cell{border:1px solid var(--line);border-radius:10px;padding:12px 14px;text-align:center;background:var(--card);}
+  .score .n{font-family:var(--serif);font-size:1.5rem;font-weight:600;line-height:1;color:#2b2a27;}
+  .score .n.win{color:var(--win);}
+  .score .n.fail{color:var(--fail);}
+  .score .l{display:block;font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-top:6px;}
+
+  /* cadence health meter */
+  .cadence{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:0 0 20px;}
+  .cadence .ch-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:9px;}
+  .cadence .ch-state{font-size:.66rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:3px 9px;border-radius:4px;}
+  .cadence .ch-state.ok{background:var(--win-wash);color:var(--win);}
+  .cadence .ch-state.watch{background:var(--amber-wash);color:var(--amber-deep);}
+  .cadence .ch-state.alert{background:var(--fail-wash);color:var(--fail);}
+  .cadence .ch-days{font-size:.8rem;color:var(--ink-soft);}
+  .cadence .ch-bar{height:7px;border-radius:4px;background:var(--wash);overflow:hidden;}
+  .cadence .ch-fill{height:100%;border-radius:4px;transition:width .4s;}
+  .cadence .ch-note{font-size:.78rem;line-height:1.55;color:var(--ink-faint);margin:9px 0 0;font-style:italic;font-family:var(--serif);}
+
+  /* filter */
+  .wall-filter{display:flex;gap:8px;align-items:center;margin:0 0 18px;flex-wrap:wrap;}
+  .wall-filter .lbl{font-size:.66rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-right:2px;}
+  .wall-filter button{font:inherit;font-size:.76rem;font-weight:700;color:var(--ink-soft);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 13px;cursor:pointer;transition:border-color .15s,color .15s,background .15s;}
+  .wall-filter button:hover{color:#2b2a27;}
+  .wall-filter button.on{background:var(--wash);color:#2b2a27;border-color:#dcdad5;}
+  .wall-filter button.on.win{background:var(--win-wash);color:var(--win);border-color:#bfe0cf;}
+  .wall-filter button.on.fail{background:var(--fail-wash);color:var(--fail);border-color:#dcdad5;}
+
+  /* pin → desk link (the loop) */
+  .pin-loop{margin:10px 0 0;font-size:.8rem;}
+  .pin-loop a{font-weight:700;border-bottom-color:var(--cheren);}
+  .pin-loop a:hover{color:var(--cheren-deep);}
+  .pin-loop .arm{color:var(--ink-faint);font-style:italic;font-family:var(--serif);}
+  .wall-empty{text-align:center;color:var(--ink-faint);font-style:italic;font-family:var(--serif);padding:24px 0;}
+</style>
+</head>
+<body>
+
+<div class="hairline"></div>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><span class="mark">DI</span> DIALOG Intelligence</a>
+    <div class="nav-links">
+      <a href="studio.html">Studio Floor</a>
+      <a href="pinup.html" class="active">Pin-up Wall</a>
+      <a href="modelshop.html">The Charrette</a>
+      <a href="library.html">Library</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container" style="text-align:center;">
+    <span class="eyebrow">POSTED OUT — LAYER THREE</span>
+    <h1>The Pin-up Wall</h1>
+    <p class="lead" style="margin:0 auto;">Dated pins, WIN or FAIL, equal typography. This wall is the actual feedback loop — the rest of the building is context.</p>
+    <div id="floorplanMount"></div>
+  </div>
+</header>
+
+<div class="wall">
+  <div class="why">
+    <h4>What this wall is for</h4>
+    <p>This is the studio's track record. The desks tell you what each tool <em>is</em>; this wall tells you whether we're still experimenting and staying honest about it — every attempt, win or fail, dated and given equal weight, newest on top. A "pin-up" is the old studio ritual: tack the work up and take the critique out loud, together. BIG ran it firm-wide every two weeks; this is the two-person prototype, and it scales the day the firm wants it to. The rule that keeps it honest, measured by the meter below: if a month passes with no FAIL pinned, we've either stopped experimenting or started hiding the misses.</p>
+  </div>
+
+  <div class="score" id="scoreMount"></div>
+  <div class="cadence" id="cadenceMount"></div>
+
+  <div class="wall-filter" id="filterMount">
+    <span class="lbl">Show</span>
+    <button data-f="all" class="on">All</button>
+    <button data-f="WIN" class="win">Wins</button>
+    <button data-f="FAIL" class="fail">Fails</button>
+  </div>
+
+  <div id="wallMount"></div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>A working studio that tells the truth about its own state. Knowledge, not people.</span>
+    <span>Drafted by Shadi &amp; Ben, narrated by Claude. &middot; v2026-07-08.11</span>
+  </div>
+</footer>
+
+<script>
+window.NARRATOR = {
+  page: "pinup",
+  lines: [
+    "Feynman. I run blue, and this wall is the part of the building I trust most.",
+    "The scoreboard and the cadence meter up top are live — I recompute them from the pins every load, including how long it's been since the last FAIL.",
+    "A month without a FAIL usually means we stopped experimenting, not that everything went right. The meter will start nagging us when that happens. Good."
+  ],
+  revisit: "The wall. Newest at the top, fails included. The numbers above are current; I checked.",
+  poke: "Careful — those are load-bearing evidence."
+};
+</script>
+<script src="assets/floorplan.js"></script>
+<script src="assets/rooms-payload.js"></script>
+<script>
+window.renderFloorplan(document.getElementById("floorplanMount"), "pinup");
+
+(function(){
+  var R = window.ROOMS_PAYLOAD || {};
+  var deskNames = ((R.studio && R.studio.desks) || []).map(function(d){ return d.name; });
+  var allPins = (R.pinup && R.pinup.pins || []).slice().reverse(); // newest first
+  var wins = allPins.filter(function(p){ return p.stamp === "WIN"; }).length;
+  var fails = allPins.length - wins;
+
+  function slugify(s){ return String(s).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,""); }
+  function parseDate(s){ var m = /(\d{4})-(\d{2})-(\d{2})/.exec(s || ""); return m ? new Date(+m[1], +m[2]-1, +m[3]) : null; }
+
+  /* ---- scoreboard ---- */
+  var score = [
+    { n: allPins.length, cls: "", l: "pins total" },
+    { n: wins, cls: "win", l: "wins" },
+    { n: fails, cls: "fail", l: "fails" }
+  ];
+  var sm = document.getElementById("scoreMount");
+  score.forEach(function(c){
+    var d = document.createElement("div"); d.className = "cell";
+    d.innerHTML = '<span class="n ' + c.cls + '"></span><span class="l"></span>';
+    d.querySelector(".n").textContent = c.n;
+    d.querySelector(".l").textContent = c.l;
+    sm.appendChild(d);
+  });
+
+  /* ---- cadence health meter: days since last FAIL vs the 30-day rule ---- */
+  (function(){
+    var RULE = 30;
+    var failDates = allPins.filter(function(p){ return p.stamp === "FAIL"; })
+                           .map(function(p){ return parseDate(p.date); })
+                           .filter(Boolean);
+    var mount = document.getElementById("cadenceMount");
+    if (!failDates.length){
+      mount.innerHTML = '<div class="ch-top"><span class="ch-state watch">No dated FAIL yet</span></div>' +
+        '<p class="ch-note">The rule: a month with no FAIL on the wall means we stopped experimenting — or started lying to the wall.</p>';
+      return;
+    }
+    var last = new Date(Math.max.apply(null, failDates.map(function(d){ return d.getTime(); })));
+    var days = Math.max(0, Math.floor((Date.now() - last.getTime()) / 86400000));
+    var lastStr = last.getFullYear() + "-" + ("0"+(last.getMonth()+1)).slice(-2) + "-" + ("0"+last.getDate()).slice(-2);
+    var state = days <= 20 ? "ok" : days <= RULE ? "watch" : "alert";
+    var stateLabel = state === "ok" ? "Experimenting" : state === "watch" ? "Getting quiet" : "Too quiet";
+    var fillColor = state === "ok" ? "var(--win)" : state === "watch" ? "var(--amber)" : "var(--fail)";
+    var pct = Math.min(100, Math.round(days / RULE * 100));
+    mount.innerHTML =
+      '<div class="ch-top"><span class="ch-state ' + state + '">' + stateLabel + '</span>' +
+      '<span class="ch-days">Last FAIL pinned <b>' + lastStr + '</b> — ' + days + ' day' + (days===1?"":"s") + ' ago</span></div>' +
+      '<div class="ch-bar"><div class="ch-fill" style="width:' + pct + '%;background:' + fillColor + ';"></div></div>' +
+      '<p class="ch-note">The rule: a month (30 days) with no FAIL means we stopped experimenting — or started lying to the wall.</p>';
+  })();
+
+  /* ---- the pins, with a link to the desk each became ---- */
+  var mount = document.getElementById("wallMount");
+  var filter = "all";
+
+  function render(){
+    mount.innerHTML = "";
+    var shown = allPins.filter(function(p){ return filter === "all" || p.stamp === filter; });
+    if (!shown.length){
+      var e = document.createElement("p"); e.className = "wall-empty";
+      e.textContent = "No " + (filter === "WIN" ? "wins" : "fails") + " pinned — yet.";
+      mount.appendChild(e); return;
+    }
+    shown.forEach(function(p){
+      var authorClass = (p.author || "").indexOf("amber") >= 0 ? "amber"
+                      : (p.author || "").indexOf("shared") >= 0 ? "shared" : "ben";
+      var d = document.createElement("div"); d.className = "pin-card";
+      d.innerHTML =
+        '<div class="pin-head"><span class="stamp"></span><span class="pin-author"></span><span class="pin-date"></span></div>' +
+        '<p class="pin-row tried"><b>Tried</b> <span></span></p>' +
+        '<p class="pin-row happened"><b>Happened</b> <span></span></p>' +
+        '<p class="pin-row verdict"><b>Verdict</b> <span></span></p>';
+      d.querySelector(".stamp").textContent = p.stamp;
+      d.querySelector(".stamp").className = "stamp " + p.stamp;
+      var au = d.querySelector(".pin-author");
+      au.textContent = p.author || "amber"; au.className = "pin-author " + authorClass;
+      d.querySelector(".pin-date").textContent = p.date;
+      d.querySelector(".tried span").textContent = p.tried;
+      d.querySelector(".happened span").textContent = p.happened;
+      d.querySelector(".verdict span").textContent = p.verdict;
+      if (p.desk && deskNames.indexOf(p.desk) >= 0){
+        var loop = document.createElement("p"); loop.className = "pin-loop";
+        var verb = p.stamp === "FAIL" ? "became the" : "on the";
+        loop.innerHTML = '<span class="arm">&#8618; ' + verb + ' </span><a href="studio.html#' + slugify(p.desk) + '">' + p.desk.replace(/^The\s+/i,"") + ' desk &rarr;</a>';
+        d.appendChild(loop);
+      }
+      mount.appendChild(d);
+    });
+  }
+
+  var fm = document.getElementById("filterMount");
+  fm.querySelectorAll("button").forEach(function(b){
+    b.addEventListener("click", function(){
+      filter = b.getAttribute("data-f");
+      fm.querySelectorAll("button").forEach(function(x){ x.classList.remove("on"); });
+      b.classList.add("on");
+      render();
+    });
+  });
+  render();
+})();
+</script>
+<script src="assets/narrator.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<!-- The Library — the map of DIALOG's knowledge, rendered live from assets/rooms-payload.js.
+     Real shelves, real locations, honest statuses. Founding law: knowledge, not people. -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DIALOG Intelligence — The Library</title>
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .nar-caret{background:#f59e0b !important;}
+  .lib{max-width:720px;margin:26px auto 0;padding:0 28px;}
+  .lib-rule{border:1px solid var(--amber-line);background:var(--amber-wash);border-radius:var(--radius-sm);
+    padding:16px 20px;font-size:.92rem;line-height:1.65;color:#5a4a2f;margin:0 0 22px;font-family:var(--serif);}
+  .neighborhood{margin:0 0 30px;}
+  .neighborhood h2{font-family:var(--serif);font-size:1.3rem;margin:0 0 4px;color:var(--ink);}
+  .neighborhood .n-count{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 14px;}
+  .shelf{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px 26px 14px;}
+  .shelf + .shelf{margin-top:16px;}
+  .shelf h3{margin-bottom:4px;font-size:1.08rem;}
+  .shelf h3 a{color:inherit;text-decoration:none;}
+  .shelf h3 a:hover{text-decoration:underline;}
+  .ask-box{margin:0 0 22px;}
+  .ask-box input{width:100%;box-sizing:border-box;font-family:var(--sans);font-size:.95rem;padding:13px 16px;
+    border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--card);color:var(--ink);}
+  .ask-box input:focus{outline:2px solid #f59e0b;outline-offset:1px;}
+  .ask-hint{font-size:.75rem;color:var(--ink-faint);margin:6px 2px 0;}
+  .ask-results{margin-top:14px;}
+  .ask-result{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-sm);padding:14px 18px;margin-bottom:10px;}
+  .ask-result-title{font-family:var(--serif);font-size:1rem;color:var(--ink);}
+  .ask-result-title a{color:inherit;text-decoration:none;}
+  .ask-result-title a:hover{text-decoration:underline;}
+  .ask-result-neigh{font-family:var(--sans);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);}
+  .ask-result-lives{font-size:.85rem;color:var(--ink-soft);margin:5px 0 0;line-height:1.5;}
+  .ask-empty{font-size:.88rem;color:var(--ink-faint);font-style:italic;padding:10px 2px;}
+  .ref-wrap{margin-top:16px;border:1px dashed var(--line);border-radius:var(--radius-sm);padding:14px 18px;}
+  .ref-wrap .ref-head{font-size:.62rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 8px;}
+  .ref-item{display:block;padding:6px 0;border-top:1px solid var(--line);font-size:.86rem;line-height:1.5;color:var(--ink-soft);}
+  .ref-item:first-of-type{border-top:none;}
+  .ref-item b{color:var(--ink);font-weight:600;margin-right:6px;}
+  .shelf .s-meta{margin-bottom:11px;}
+  .s-row{margin:0 0 10px;font-size:.9rem;line-height:1.66;color:var(--ink-soft);}
+  .s-row b{display:block;font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:2px;}
+  .s-row.asking span{font-family:var(--serif);font-style:italic;}
+</style>
+</head>
+<body>
+
+<div class="hairline"></div>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><span class="mark">DI</span> DIALOG Intelligence</a>
+    <div class="nav-links">
+      <a href="studio.html">Studio Floor</a>
+      <a href="pinup.html">Pin-up Wall</a>
+      <a href="modelshop.html">The Charrette</a>
+      <a href="library.html" class="active">Library</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container" style="text-align:center;">
+    <span class="eyebrow">POSTED OUT — LAYER THREE</span>
+    <h1>The Library</h1>
+    <p class="lead" id="pageLead" style="margin-left:auto;margin-right:auto;"></p>
+    <div id="floorplanMount"></div>
+  </div>
+</header>
+
+<div class="lib">
+  <div class="lib-rule" id="libRule"></div>
+  <div class="ask-box">
+    <input type="text" id="askInput" placeholder="Ask the Library — e.g. &quot;timesheet code&quot; or &quot;Revit family abbreviations&quot;" autocomplete="off">
+    <p class="ask-hint">Searches shelf titles and descriptions only — this finds where knowledge lives, it doesn't read DASH itself. That's the private layer, not this page.</p>
+    <div class="ask-results" id="askResults"></div>
+  </div>
+  <div id="libMount"></div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>A working record that tells the truth about its own state. Knowledge, not people.</span>
+    <span>Drafted by Shadi &amp; Ben, narrated by Claude. &middot; v2026-07-08.10</span>
+  </div>
+</footer>
+
+<script>
+window.NARRATOR = {
+  page: "library",
+  lines: [
+    "The quiet room. You can't ground an AI in a firm's knowledge until you've mapped where the knowledge actually lives — this room is that map.",
+    "Real shelves, real locations, honest statuses. Today most read 'mapped.' The work is turning them 'connected,' one shelf at a time.",
+    "And the law carved over the door: knowledge, not people. What gets mapped is what the firm knows — never who the firm is."
+  ],
+  revisit: "Still the quiet room. The shelves are below, statuses current.",
+  poke: "Shhh."
+};
+</script>
+<script src="assets/floorplan.js"></script>
+<script src="assets/rooms-payload.js"></script>
+<script>
+window.renderFloorplan(document.getElementById("floorplanMount"), "library");
+
+(function(){
+  var L = (window.ROOMS_PAYLOAD && window.ROOMS_PAYLOAD.library) || {};
+  if (L.lead) document.getElementById("pageLead").textContent = L.lead;
+  if (L.rule) document.getElementById("libRule").textContent = L.rule;
+
+  var LABELS = { lives: "Where it lives", asking: "What you could ask" };
+  var mount = document.getElementById("libMount");
+
+  function renderShelf(container, s){
+    var el = document.createElement("div"); el.className = "shelf";
+    var tagClass = (s.status || "").toLowerCase() === "connected" ? "win" : "";
+    var html = '<h3></h3><div class="s-meta"><span class="tag ' + tagClass + '"></span></div>';
+    ["lives","asking"].forEach(function(k){
+      if (s[k]) html += '<p class="s-row ' + k + '"><b>' + LABELS[k] + '</b><span></span></p>';
+    });
+    el.innerHTML = html;
+    var h3 = el.querySelector("h3");
+    if (s.url) {
+      var a = document.createElement("a");
+      a.href = s.url; a.target = "_blank"; a.rel = "noopener";
+      a.textContent = s.name;
+      h3.appendChild(a);
+    } else {
+      h3.textContent = s.name;
+    }
+    el.querySelector(".s-meta .tag").textContent = s.status || "";
+    ["lives","asking"].forEach(function(k){
+      var row = el.querySelector(".s-row." + k + " span");
+      if (row) row.textContent = s[k];
+    });
+    container.appendChild(el);
+  }
+
+  function renderRefItem(container, s){
+    var row = document.createElement("p"); row.className = "ref-item";
+    var b = document.createElement("b"); b.textContent = s.name;
+    row.appendChild(b);
+    var span = document.createElement("span"); span.textContent = s.lives || "";
+    row.appendChild(span);
+    container.appendChild(row);
+  }
+
+  if (L.neighborhoods && L.neighborhoods.length) {
+    L.neighborhoods.forEach(function(n){
+      var section = document.createElement("div"); section.className = "neighborhood";
+      var h2 = document.createElement("h2"); h2.textContent = n.name;
+      var count = document.createElement("p"); count.className = "n-count";
+      count.textContent = (n.shelves || []).length + (n.shelves && n.shelves.length === 1 ? " shelf" : " shelves");
+      section.appendChild(h2); section.appendChild(count);
+
+      var primary = (n.shelves || []).filter(function(s){ return s.kind !== "reference"; });
+      var reference = (n.shelves || []).filter(function(s){ return s.kind === "reference"; });
+
+      primary.forEach(function(s){ renderShelf(section, s); });
+
+      if (reference.length) {
+        var refWrap = document.createElement("div"); refWrap.className = "ref-wrap";
+        var head = document.createElement("p"); head.className = "ref-head";
+        head.textContent = "Quick reference — mapped, not curated";
+        refWrap.appendChild(head);
+        reference.forEach(function(s){ renderRefItem(refWrap, s); });
+        section.appendChild(refWrap);
+      }
+
+      mount.appendChild(section);
+    });
+  } else {
+    (L.shelves || []).forEach(function(s){ renderShelf(mount, s); });
+  }
+
+  // --- Ask the Library: client-side search over the map itself (no live DASH access, no backend) ---
+  var ALL_SHELVES = [];
+  (L.neighborhoods || []).forEach(function(n){
+    (n.shelves || []).forEach(function(s){ ALL_SHELVES.push({ neighborhood: n.name, shelf: s }); });
+  });
+
+  function scoreShelf(query, item){
+    var s = item.shelf;
+    var hay = [s.name, s.lives || "", s.asking || "", item.neighborhood].join(" ").toLowerCase();
+    var terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+    var score = 0;
+    terms.forEach(function(t){ if (hay.indexOf(t) !== -1) score += (s.name.toLowerCase().indexOf(t) !== -1 ? 2 : 1); });
+    return score;
+  }
+
+  function renderAskResult(box, item){
+    var row = document.createElement("div"); row.className = "ask-result";
+    var title = document.createElement("div"); title.className = "ask-result-title";
+    if (item.shelf.url) {
+      var a = document.createElement("a"); a.href = item.shelf.url; a.target = "_blank"; a.rel = "noopener";
+      a.textContent = item.shelf.name;
+      title.appendChild(a);
+    } else {
+      var span = document.createElement("span"); span.textContent = item.shelf.name;
+      title.appendChild(span);
+    }
+    var neigh = document.createElement("span"); neigh.className = "ask-result-neigh";
+    neigh.textContent = "  ·  " + item.neighborhood;
+    title.appendChild(neigh);
+    var lives = document.createElement("p"); lives.className = "ask-result-lives";
+    lives.textContent = item.shelf.lives || "";
+    row.appendChild(title); row.appendChild(lives);
+    box.appendChild(row);
+  }
+
+  var askInput = document.getElementById("askInput");
+  var askResults = document.getElementById("askResults");
+  var libMount = document.getElementById("libMount");
+
+  if (askInput) {
+    askInput.addEventListener("input", function(){
+      var q = askInput.value;
+      askResults.innerHTML = "";
+      if (!q.trim()) { libMount.style.display = ""; return; }
+      libMount.style.display = "none";
+      var scored = ALL_SHELVES
+        .map(function(item){ return { item: item, score: scoreShelf(q, item) }; })
+        .filter(function(r){ return r.score > 0; })
+        .sort(function(a, b){ return b.score - a.score; })
+        .slice(0, 6);
+      if (!scored.length) {
+        var p = document.createElement("p"); p.className = "ask-empty";
+        p.textContent = "Nothing mapped for that yet — try different words, or it's a real gap in the map.";
+        askResults.appendChild(p);
+      } else {
+        scored.forEach(function(r){ renderAskResult(askResults, r.item); });
+      }
+    });
+  }
+})();
+</script>
+<script src="assets/narrator.js"></script>
+
+</body>
+</html>
