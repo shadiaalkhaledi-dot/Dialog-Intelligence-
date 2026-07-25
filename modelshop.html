@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<!-- The Charrette -- rebuilt 2026-07-24 around a real roadmap instead of a flat ideas list.
-     Five sections in sequence: The Playbook (BIG's actual AI adoption story, staged, with
+<!-- Playbook -- rebuilt 2026-07-24 around a real roadmap instead of a flat ideas list.
+     Five sections in sequence: Ground Rules (BIG's actual AI adoption story, staged, with
      concepts explained in place as they were needed -- a real learning module, not a glossary
      bolted on the side), Where We Actually Are (an honest plot of DIALOG's 8 desks against
      that same path -- not flattering by default), The Master Plan (the forward roadmap that
@@ -12,7 +12,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DIALOG Intelligence -- The Charrette</title>
+<title>DIALOG Intelligence -- Playbook</title>
 <link rel="stylesheet" href="assets/style.css">
 <style>
   .nar-caret{background:#3fc6ff !important;}
@@ -94,16 +94,16 @@
   .rm-subhead:first-of-type{margin-top:0;}
   .rm-subnote{font-size:.84rem;line-height:1.62;color:var(--ink-soft);margin:0 0 18px;}
 
-  .timeline-row{display:flex;gap:0;margin:0 0 10px;position:relative;}
-  .timeline-item{flex:1;min-width:0;position:relative;padding:0 10px;text-align:center;}
-  .timeline-item::before{content:"";position:absolute;top:9px;left:0;right:0;height:2px;background:var(--line);}
-  .timeline-item:first-child::before{left:50%;}
-  .timeline-item:last-child::before{right:50%;}
-  .timeline-dot{width:18px;height:18px;border-radius:50%;background:var(--cheren);border:3px solid #fff;box-shadow:0 0 0 2px var(--cheren);margin:0 auto 10px;position:relative;z-index:1;}
+  .timeline-row{display:flex;flex-direction:column;gap:0;margin:0 0 10px;position:relative;}
+  .timeline-item{position:relative;padding:0 0 24px 32px;text-align:left;}
+  .timeline-item:last-child{padding-bottom:0;}
+  .timeline-item::before{content:"";position:absolute;top:18px;bottom:0;left:8px;width:2px;background:var(--line);}
+  .timeline-item:last-child::before{display:none;}
+  .timeline-dot{width:18px;height:18px;border-radius:50%;background:var(--cheren);border:3px solid #fff;box-shadow:0 0 0 2px var(--cheren);margin:0;position:absolute;left:0;top:0;z-index:1;}
   .timeline-n{font-size:.64rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--cheren-deep);margin:0 0 3px;}
   .timeline-name{font-weight:700;font-size:.86rem;color:#171717;margin:0 0 3px;line-height:1.3;}
   .timeline-dates{font-size:.72rem;color:var(--ink-faint);margin:0 0 6px;}
-  .timeline-trigger{font-size:.78rem;line-height:1.5;color:var(--ink-soft);}
+  .timeline-trigger{font-size:.78rem;line-height:1.5;color:var(--ink-soft);max-width:58ch;}
 
   .rm-legend{display:flex;flex-wrap:wrap;gap:14px;margin:0 0 18px;font-size:.76rem;color:var(--ink-soft);}
   .rm-legend span{display:inline-flex;align-items:center;gap:6px;}
@@ -175,7 +175,7 @@
     <div class="nav-links">
       <a href="studio.html">Studio Floor</a>
       <a href="pinup.html">Pin-up Wall</a>
-      <a href="modelshop.html" class="active">The Charrette</a>
+      <a href="modelshop.html" class="active">Playbook</a>
       <a href="library.html">Library</a>
     </div>
   </div>
@@ -184,7 +184,7 @@
 <header class="hero">
   <div class="container" style="text-align:center;">
     <span class="eyebrow">POSTED OUT -- LAYER THREE</span>
-    <h1 id="pageH1">The Charrette</h1>
+    <h1 id="pageH1">Playbook</h1>
     <p class="lead" id="pageLead" style="margin-left:auto;margin-right:auto;"></p>
     <div id="floorplanMount"></div>
   </div>
@@ -195,7 +195,7 @@
 
   <nav class="charrette-tabs" id="charretteTabs">
     <button type="button" class="tab-btn" data-tab="map">The Map</button>
-    <button type="button" class="tab-btn" data-tab="playbook">The Playbook</button>
+    <button type="button" class="tab-btn" data-tab="playbook">Ground Rules</button>
     <button type="button" class="tab-btn" data-tab="gap">Where We Are</button>
     <button type="button" class="tab-btn" data-tab="masterplan">Master Plan</button>
     <button type="button" class="tab-btn" data-tab="learning">Learning Plan</button>
@@ -225,7 +225,7 @@ window.NARRATOR = {
     "The gap section isn't flattering on purpose. We skipped a few of BIG's stages entirely and jumped toward a harder one at a much smaller scale -- better to say that plainly than pretend otherwise.",
     "The learning plan at the bottom is a draft, not a plaque. It's supposed to get edited."
   ],
-  revisit: "The charrette. Same five sections -- check the learning plan for what's changed.",
+  revisit: "The Playbook. Same five sections -- check the learning plan for what's changed.",
   poke: "Careful. Concept models take real dents."
 };
 </script>
@@ -388,7 +388,7 @@ window.renderFloorplan(document.getElementById("floorplanMount"), "modelshop");
     renderRoadmapStory(rmWrap, R);
   })();
 
-  /* ---- 1. The Playbook ---- */
+  /* ---- 1. Ground Rules ---- */
   (function(){
     var P = M.inspiration; if (!P) return;
     var wrap = document.getElementById("playbookSection");
