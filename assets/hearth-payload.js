@@ -6,23 +6,52 @@
    floor. Feynman's lines adapted near-verbatim from Ben's drafted intro material. */
 window.HEARTH_PAYLOAD = {
  "version": "2026-07-08.11",
-
  "hero": {
   "eyebrow": "DIALOG INTELLIGENCE",
   "line": "A working record of what two of us are building with AI at DIALOG."
  },
-
  "intro": {
-  "eyebrow": "NEW HERE? START HERE",
-  "title": "What this is",
+  "eyebrow": "NEW HERE? START WITH A JOURNEY",
+  "title": "What's in the building, and where to start",
   "body": [
    "Plenty of people at DIALOG already use AI day to day. This is the corner where two of us — Shadi and Ben — publish our results in the open: the tools we build, what they change on an ordinary Tuesday, and what breaks.",
-   "The building is the navigation. The Studio Floor holds one desk per tool. The Pin-up Wall is the feedback loop — wins and fails, dated, equal typography. The Hearth, this room, carries each week's headline conversation between our two voices and the side-talk around it.",
    "One rule governs everything you'll read: knowledge, not people. Tools, lessons, and numbers about the work — never client names, fee data, or anyone's personal information."
   ],
-  "voicesNote": "Two voices narrate the building, equal weight:"
+  "voicesNote": "Two voices narrate the building, equal weight:",
+  "journeyLabel": "If you haven't been here before, read the rooms in this order:",
+  "journey": [
+   {
+    "n": 1,
+    "room": "The Charrette",
+    "href": "modelshop.html#map",
+    "why": "Start here. The Map tab shows the actual playbook we're learning from, an honest read of where DIALOG stands against it, and the roadmap that follows — the context everything else on this site sits inside."
+   },
+   {
+    "n": 2,
+    "room": "Studio Floor",
+    "href": "studio.html",
+    "why": "One desk per real tool — status, what's needed from DT, and the actual argument behind each decision, not just a headline."
+   },
+   {
+    "n": 3,
+    "room": "Pin-up Wall",
+    "href": "pinup.html",
+    "why": "The rules we've actually earned from real wins and real fails — how we build, how we judge."
+   },
+   {
+    "n": 4,
+    "room": "The Library",
+    "href": "library.html",
+    "why": "The map of DIALOG's own knowledge — what a future grounded-AI answer would actually be built on."
+   },
+   {
+    "n": 5,
+    "room": "The Hearth",
+    "href": "index.html",
+    "why": "You're already here. Come back to this room for the weekly conversation and what's changed since your last visit."
+   }
+  ]
  },
-
  "weeks": [
   {
    "id": "2026-07-08",
@@ -31,16 +60,33 @@ window.HEARTH_PAYLOAD = {
    "tag": "intro",
    "topic": "Welcome to the studio",
    "lines": [
-    { "who": "amber", "t": "Since you're new here, the short version: plenty of people at DIALOG use AI day to day. This is the corner where two of us publish our results — the tools we build, what they change, and what breaks. That last part stays on the record on purpose." },
-    { "who": "ben",   "t": "I'm Feynman. I check the numbers before anyone celebrates — mostly because I've been wrong enough times to know better. Cherenkov blue, if you're wondering: the glow a reactor gives off when it's actually running." },
-    { "who": "amber", "t": "I'm Amber — Shadi's voice, your host. The floor plan above is real navigation: hover a room to see what happens inside it, click to walk in." },
-    { "who": "ben",   "t": "If you only have a minute, start with the wall. Wins and fails, dated, equal typography. If it were all wins, we'd be lying — that's why it isn't." },
-    { "who": "amber", "t": "And one rule governs everything you'll read: knowledge, not people. Tools and lessons — never client names, fee data, or anyone's personal information." }
+    {
+     "who": "amber",
+     "t": "Since you're new here, the short version: plenty of people at DIALOG use AI day to day. This is the corner where two of us publish our results — the tools we build, what they change, and what breaks. That last part stays on the record on purpose."
+    },
+    {
+     "who": "ben",
+     "t": "I'm Feynman. I check the numbers before anyone celebrates — mostly because I've been wrong enough times to know better. Cherenkov blue, if you're wondering: the glow a reactor gives off when it's actually running."
+    },
+    {
+     "who": "amber",
+     "t": "I'm Amber — Shadi's voice, your host. The floor plan above is real navigation: hover a room to see what happens inside it, click to walk in."
+    },
+    {
+     "who": "ben",
+     "t": "If you only have a minute, start with the wall. Wins and fails, dated, equal typography. If it were all wins, we'd be lying — that's why it isn't."
+    },
+    {
+     "who": "amber",
+     "t": "And one rule governs everything you'll read: knowledge, not people. Tools and lessons — never client names, fee data, or anyone's personal information."
+    }
    ],
-   "handoff": { "t": "Continue to the wall →", "href": "pinup.html" }
+   "handoff": {
+    "t": "Continue to the wall →",
+    "href": "pinup.html"
+   }
   }
  ],
-
  "spots": {
   "bar": {
    "label": "At the bar — side conversations, by topic",
@@ -49,10 +95,12 @@ window.HEARTH_PAYLOAD = {
   },
   "gallery": {
    "label": "In the gallery — latest from the wall",
-   "handoff": { "t": "All pins →", "href": "pinup.html" }
+   "handoff": {
+    "t": "All pins →",
+    "href": "pinup.html"
+   }
   }
  },
-
  "voices": [
   {
    "name": "Amber",
@@ -67,13 +115,20 @@ window.HEARTH_PAYLOAD = {
    "desc": "The voice on the blue side. Plain and quantified — every claim comes with a receipt. Cherenkov blue: the glow of a reactor that's actually running."
   }
  ],
-
  "rules": [
-  { "h": "Honest by design", "t": "A failure is pinned with the same typography as a win. A month with no FAIL on the wall means we stopped experimenting." },
-  { "h": "Knowledge, not people", "t": "Tools, lessons, and numbers about the work — never client names, fee or rate data, or anyone's personal information." },
-  { "h": "A weekly rhythm", "t": "The hearth changes every Friday: a new headline, new conversations at the edges. A quiet week is allowed to look quiet." }
+  {
+   "h": "Honest by design",
+   "t": "A failure is pinned with the same typography as a win. A month with no FAIL on the wall means we stopped experimenting."
+  },
+  {
+   "h": "Knowledge, not people",
+   "t": "Tools, lessons, and numbers about the work — never client names, fee or rate data, or anyone's personal information."
+  },
+  {
+   "h": "A weekly rhythm",
+   "t": "The hearth changes every Friday: a new headline, new conversations at the edges. A quiet week is allowed to look quiet."
+  }
  ],
-
  "footer": "DIALOG Intelligence — an honest record of two people using AI at DIALOG. Knowledge, not people."
 };
 /* Back-compat: some views still read spots.fire — keep it pointed at this week. */

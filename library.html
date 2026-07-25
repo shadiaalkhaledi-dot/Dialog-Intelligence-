@@ -42,6 +42,45 @@
   .s-row{margin:0 0 10px;font-size:.9rem;line-height:1.66;color:var(--ink-soft);}
   .s-row b{display:block;font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:2px;}
   .s-row.asking span{font-family:var(--serif);font-style:italic;}
+
+  .lib-jumpnav{position:sticky;top:0;z-index:5;background:var(--bg,#fdfcfa);padding:10px 0 12px;margin:0 0 18px;border-bottom:1px solid var(--line);}
+  .lib-jumpnav-label{font-size:.64rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 8px;}
+  .lib-jumpnav-list{display:flex;flex-wrap:wrap;gap:6px;}
+  .lib-jumpnav-chip{font:inherit;font-size:.76rem;font-weight:600;color:#5d5a52;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 12px;cursor:pointer;}
+  .lib-jumpnav-chip:hover{border-color:var(--amber-line);color:#b45309;}
+  .lib-jumpnav-chip .jn-count{color:var(--ink-faint);font-weight:400;}
+
+  .neighborhood{display:block;border:1px solid var(--line);border-radius:var(--radius);background:var(--card);margin:0 0 12px;padding:0;}
+  .neighborhood > summary{cursor:pointer;list-style:none;padding:16px 22px;}
+  .neighborhood > summary::-webkit-details-marker{display:none;}
+  .neighborhood > summary::before{content:"▸ ";color:#b45309;}
+  .neighborhood[open] > summary::before{content:"▾ ";}
+  .neighborhood h2{display:inline;font-family:var(--serif);font-size:1.15rem;margin:0;color:var(--ink);}
+  .neighborhood .n-count{display:inline;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-left:10px;}
+  .neighborhood-body{padding:0 22px 18px;}
+
+  .rag-callout{border:1px solid var(--cheren-line);background:var(--cheren-wash);border-radius:var(--radius);padding:20px 22px;margin:0 0 22px;}
+  .rag-callout .rc-eyebrow{font-size:.64rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--cheren-deep);margin:0 0 8px;}
+  .rag-callout h2{font-family:var(--serif);font-weight:600;font-size:1.08rem;margin:0 0 10px;color:#171717;}
+  .rag-callout p{font-size:.88rem;line-height:1.65;color:#33454e;margin:0 0 12px;}
+  .rag-callout p:last-of-type{margin-bottom:0;}
+  .rag-roadmap-link{font-size:.84rem;font-style:italic;color:#0b7cb5;margin:12px 0 14px;line-height:1.55;}
+  .rag-candidates-label{font-size:.64rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--cheren-deep);margin:14px 0 8px;}
+  .rag-candidate{margin:0 0 8px;font-size:.85rem;line-height:1.5;}
+  .rag-candidate:last-child{margin-bottom:0;}
+  .rag-candidate b{color:#171717;}
+  .rag-candidate span{color:#33454e;}
+
+  .lib-glossary{border:1px dashed var(--line);border-radius:var(--radius-sm);padding:12px 16px;margin:0 0 22px;}
+  .lib-glossary summary{cursor:pointer;font-size:.82rem;font-weight:700;color:#0b7cb5;list-style:none;}
+  .lib-glossary summary::-webkit-details-marker{display:none;}
+  .lib-glossary summary::before{content:"+ ";color:var(--cheren-deep);}
+  .lib-glossary[open] summary::before{content:"– ";}
+  .lib-glossary-list{margin-top:12px;}
+  .lib-glossary-row{margin:0 0 10px;font-size:.82rem;line-height:1.55;}
+  .lib-glossary-row:last-child{margin-bottom:0;}
+  .lib-glossary-row b{display:block;color:#171717;font-size:.8rem;margin-bottom:2px;}
+  .lib-glossary-row span{color:#6b6a63;}
 </style>
 </head>
 <body>
@@ -71,11 +110,14 @@
 
 <div class="lib">
   <div class="lib-rule" id="libRule"></div>
+  <div id="ragCalloutMount"></div>
+  <div id="libGlossaryMount"></div>
   <div class="ask-box">
     <input type="text" id="askInput" placeholder="Ask the Library — e.g. &quot;timesheet code&quot; or &quot;Revit family abbreviations&quot;" autocomplete="off">
     <p class="ask-hint">Searches shelf titles and descriptions only — this finds where knowledge lives, it doesn't read DASH itself. That's the private layer, not this page.</p>
     <div class="ask-results" id="askResults"></div>
   </div>
+  <div id="libJumpnavMount"></div>
   <div id="libMount"></div>
 </div>
 
@@ -107,6 +149,51 @@ window.renderFloorplan(document.getElementById("floorplanMount"), "library");
   var L = (window.ROOMS_PAYLOAD && window.ROOMS_PAYLOAD.library) || {};
   if (L.lead) document.getElementById("pageLead").textContent = L.lead;
   if (L.rule) document.getElementById("libRule").textContent = L.rule;
+
+  (function(){
+    var RC = L.ragCallout; if (!RC) return;
+    var box = document.createElement("div"); box.className = "rag-callout";
+    box.appendChild((function(){ var p = document.createElement("p"); p.className = "rc-eyebrow"; p.textContent = RC.eyebrow || ""; return p; })());
+    box.appendChild((function(){ var h = document.createElement("h2"); h.textContent = RC.title || ""; return h; })());
+    (RC.body || []).forEach(function(t){
+      var p = document.createElement("p"); p.textContent = t; box.appendChild(p);
+    });
+    if (RC.roadmapLink){
+      var link = document.createElement("p"); link.className = "rag-roadmap-link";
+      var a = document.createElement("a"); a.href = "modelshop.html#map"; a.textContent = RC.roadmapLink;
+      link.appendChild(a); box.appendChild(link);
+    }
+    if (RC.firstCandidates && RC.firstCandidates.length){
+      var label = document.createElement("p"); label.className = "rag-candidates-label";
+      label.textContent = "If we picked one shelf to connect first";
+      box.appendChild(label);
+      RC.firstCandidates.forEach(function(c){
+        var row = document.createElement("p"); row.className = "rag-candidate";
+        var b = document.createElement("b"); b.textContent = c.name + " — ";
+        var span = document.createElement("span"); span.textContent = c.why;
+        row.appendChild(b); row.appendChild(span);
+        box.appendChild(row);
+      });
+    }
+    document.getElementById("ragCalloutMount").appendChild(box);
+  })();
+
+  (function(){
+    var terms = L.glossary; if (!terms || !terms.length) return;
+    var det = document.createElement("details"); det.className = "lib-glossary";
+    var sum = document.createElement("summary"); sum.textContent = "New to \u201cmapped\u201d, \u201cconnected\u201d, or RAG? Tap for plain definitions";
+    det.appendChild(sum);
+    var list = document.createElement("div"); list.className = "lib-glossary-list";
+    terms.forEach(function(g){
+      var row = document.createElement("div"); row.className = "lib-glossary-row";
+      var b = document.createElement("b"); b.textContent = g.term;
+      var span = document.createElement("span"); span.textContent = g.def;
+      row.appendChild(b); row.appendChild(span);
+      list.appendChild(row);
+    });
+    det.appendChild(list);
+    document.getElementById("libGlossaryMount").appendChild(det);
+  })();
 
   var LABELS = { lives: "Where it lives", asking: "What you could ask" };
   var mount = document.getElementById("libMount");
@@ -145,18 +232,32 @@ window.renderFloorplan(document.getElementById("floorplanMount"), "library");
     container.appendChild(row);
   }
 
+  function slugify(s){ return String(s).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,""); }
+
   if (L.neighborhoods && L.neighborhoods.length) {
+    var jumpMount = document.getElementById("libJumpnavMount");
+    var jumpBar = document.createElement("div"); jumpBar.className = "lib-jumpnav";
+    jumpBar.appendChild((function(){ var p = document.createElement("p"); p.className = "lib-jumpnav-label"; p.textContent = "Jump to a neighborhood — " + L.neighborhoods.length + " total"; return p; })());
+    var jumpList = document.createElement("div"); jumpList.className = "lib-jumpnav-list";
+    jumpBar.appendChild(jumpList);
+    jumpMount.appendChild(jumpBar);
+
     L.neighborhoods.forEach(function(n){
-      var section = document.createElement("div"); section.className = "neighborhood";
+      var nid = "neigh-" + slugify(n.name);
+      var section = document.createElement("details"); section.className = "neighborhood"; section.id = nid;
+      var summary = document.createElement("summary");
       var h2 = document.createElement("h2"); h2.textContent = n.name;
-      var count = document.createElement("p"); count.className = "n-count";
+      var count = document.createElement("span"); count.className = "n-count";
       count.textContent = (n.shelves || []).length + (n.shelves && n.shelves.length === 1 ? " shelf" : " shelves");
-      section.appendChild(h2); section.appendChild(count);
+      summary.appendChild(h2); summary.appendChild(count);
+      section.appendChild(summary);
+
+      var body = document.createElement("div"); body.className = "neighborhood-body";
 
       var primary = (n.shelves || []).filter(function(s){ return s.kind !== "reference"; });
       var reference = (n.shelves || []).filter(function(s){ return s.kind === "reference"; });
 
-      primary.forEach(function(s){ renderShelf(section, s); });
+      primary.forEach(function(s){ renderShelf(body, s); });
 
       if (reference.length) {
         var refWrap = document.createElement("div"); refWrap.className = "ref-wrap";
@@ -164,10 +265,19 @@ window.renderFloorplan(document.getElementById("floorplanMount"), "library");
         head.textContent = "Quick reference — mapped, not curated";
         refWrap.appendChild(head);
         reference.forEach(function(s){ renderRefItem(refWrap, s); });
-        section.appendChild(refWrap);
+        body.appendChild(refWrap);
       }
 
+      section.appendChild(body);
       mount.appendChild(section);
+
+      var chip = document.createElement("button"); chip.type = "button"; chip.className = "lib-jumpnav-chip";
+      chip.innerHTML = n.name + ' <span class="jn-count">(' + (n.shelves || []).length + ')</span>';
+      chip.addEventListener("click", function(){
+        section.open = true;
+        section.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+      jumpList.appendChild(chip);
     });
   } else {
     (L.shelves || []).forEach(function(s){ renderShelf(mount, s); });

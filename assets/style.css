@@ -257,9 +257,92 @@ footer.site-footer .container { display: flex; justify-content: space-between; f
 .desk .desk-meta { margin-bottom: 14px; }
 .anat { margin: 0 0 12px; font-size: .92rem; line-height: 1.68; color: var(--ink-soft); }
 .anat b { display: block; font-size: .6rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 2px; }
-.anat.broke b { color: var(--fail); }
-.anat.steal { color: var(--ink); }
-.anat.steal b { color: var(--amber-deep); }
+.anat.risk b { color: var(--fail); }
+.anat.lesson { color: var(--ink); }
+.anat.lesson b { color: var(--amber-deep); }
+.anat.how .how-summary { display: block; margin-bottom: 8px; }
+.how-steps { margin: 0 0 4px; padding-left: 19px; display: flex; flex-direction: column; gap: 5px; }
+.how-steps li { font-size: .88rem; line-height: 1.5; color: var(--ink-soft); }
+.how-steps li::marker { color: var(--ink-faint); font-size: .8rem; }
+.risk-list { display: flex; flex-direction: column; gap: 9px; margin-top: 2px; }
+.risk-item { font-size: .88rem; line-height: 1.55; }
+.risk-item b { display: block; font-size: .68rem; font-weight: 700; letter-spacing: .04em; text-transform: none; color: #8a6d1f; margin-bottom: 1px; }
+.risk-item span { color: var(--ink-soft); }
+
+
+/* ---------- Stage taxonomy — reused across the building wherever a project needs a maturity read ---------- */
+/* Concept: idea/study only. Prototype: an early build exists. Pilot: running for real, scoped.
+   Live: proven, in regular real use. Shelved: paused on purpose, with a reason on record. */
+.stage-pill { font-size: .64rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 3px 9px; border-radius: 4px; display: inline-block; }
+.stage-pill.concept { background: var(--wash); color: var(--ink-faint); }
+.stage-pill.prototype { background: var(--cheren-wash); color: var(--cheren-deep); }
+.stage-pill.pilot { background: var(--amber-wash); color: var(--amber-deep); }
+.stage-pill.live { background: var(--win-wash); color: var(--win); }
+.stage-pill.shelved { background: var(--fail-wash); color: var(--fail); }
+
+.owner-badge { width: 22px; height: 22px; border-radius: 50%; color: #fff; font-size: .6rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+.owner-badge.amber { background: var(--amber); }
+.owner-badge.cherenkov { background: var(--cheren); }
+.owner-badge.shared { background: linear-gradient(135deg, var(--amber), var(--cheren)); }
+
+.stage-track { display: flex; gap: 5px; }
+.stage-track .seg { flex: 1; height: 4px; border-radius: 2px; background: var(--line); }
+.stage-track .seg.on.concept { background: var(--ink-faint); }
+.stage-track .seg.on.prototype { background: var(--cheren-deep); }
+.stage-track .seg.on.pilot { background: var(--amber-deep); }
+.stage-track .seg.on.live { background: var(--win); }
+.stage-track-labels { display: flex; gap: 5px; margin-top: 4px; }
+.stage-track-labels span { flex: 1; text-align: center; font-size: .62rem; color: var(--ink-faint); }
+.stage-track-labels span.current { color: var(--ink-soft); font-weight: 600; }
+
+.ask-flag { font-size: .72rem; color: var(--ink-faint); display: flex; align-items: center; gap: 5px; }
+.ask-flag.open { color: var(--amber-deep); font-weight: 600; }
+.ask-flag.answered { color: var(--win); }
+
+/* ---------- The DT box — where a desk answers 'where is it at, what do you need from me' ---------- */
+.dt-box { background: var(--amber-wash); border: 1px solid var(--amber-line); border-radius: var(--radius); padding: 15px 18px; margin: 14px 0 18px; }
+.dt-box .dt-label { font-size: .62rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--amber-deep); margin: 0 0 9px; }
+.dt-box .dt-where { font-size: .9rem; line-height: 1.6; color: #3a3833; margin: 0 0 12px; }
+.dt-box .dt-asks-label { font-size: .6rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-faint); margin: 0 0 7px; }
+.ask-row { display: flex; gap: 9px; align-items: flex-start; font-size: .84rem; line-height: 1.55; color: #3a3833; margin-bottom: 7px; }
+.ask-row:last-child { margin-bottom: 0; }
+.ask-chip { font-size: .58rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; flex: 0 0 auto; margin-top: 1px; }
+.ask-chip.open { background: var(--amber-wash); color: var(--amber-deep); }
+.ask-chip.answered { background: var(--win-wash); color: var(--win); }
+.dt-box .dt-empty { font-size: .82rem; font-style: italic; color: var(--ink-faint); }
+
+.asks-summary { background: var(--amber-wash); border: 1px solid var(--amber-line); border-radius: var(--radius); padding: 15px 18px; margin: 0 0 24px; text-align: left; }
+.asks-summary .ask-row { margin-bottom: 8px; }
+.asks-summary .ask-row a { font-weight: 700; border-bottom-color: var(--amber-deep); }
+.asks-summary-note { font-size: .76rem; color: var(--ink-faint); margin: 8px 0 0; font-style: italic; }
+
+/* ---------- The record -- problem/how/proof/risk/lesson, one continuous read, nothing collapsed ---------- */
+.record { margin-top: 4px; }
+.proof-block { margin: 0 0 14px; }
+.proof-label { display: block; font-size: .6rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 6px; }
+.proof-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 560px) { .proof-columns { grid-template-columns: 1fr; } }
+.proof-col { font-size: .92rem; line-height: 1.65; color: var(--ink-soft); }
+.proof-col b { display: block; font-size: .6rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; margin-bottom: 3px; }
+.proof-col.before b { color: var(--ink-faint); }
+.proof-col.after b { color: var(--win); }
+.proof-col.after { color: var(--ink); }
+.proof-plain { font-size: .92rem; line-height: 1.68; color: var(--ink-soft); margin: 0; }
+
+.branch-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 0 0 14px; }
+@media (max-width: 560px) { .branch-columns { grid-template-columns: 1fr; } }
+.branch-col { font-size: .9rem; line-height: 1.62; color: var(--ink-soft); border-left: 2px solid var(--line); padding-left: 12px; }
+.branch-col.amber { border-left-color: var(--amber); }
+.branch-col.cherenkov { border-left-color: var(--cheren); }
+.branch-col-label { display: block; font-size: .68rem; font-weight: 700; letter-spacing: .04em; color: var(--ink); margin-bottom: 4px; }
+.branch-col.amber .branch-col-label { color: var(--amber-deep); }
+.branch-col.cherenkov .branch-col-label { color: var(--cheren-deep); }
+.branch-proof .bp-before, .branch-proof .bp-after { display: block; margin-bottom: 4px; }
+.branch-proof b { font-size: .6rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); margin-right: 4px; }
+
+.desk-updated { font-size: .72rem; color: var(--ink-faint); }
+
 
 @media (prefers-reduced-motion: reduce) {
   .say { transition: none; opacity: 1; transform: none; }

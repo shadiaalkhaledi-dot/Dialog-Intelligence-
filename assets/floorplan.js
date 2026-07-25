@@ -14,16 +14,26 @@
    keys:   hearth | studio | pinup | modelshop | library
    No dependencies, no build step, ES5. */
 (function () {
+  /* each room's own colour, tied to who actually narrates that page — Amber (Shadi)
+     or Cherenkov (Ben/Feynman) — not one universal tint for every "here" state. */
+  var HUES = {
+    hearth:  { wash: "#fff3da", deep: "#b45309", dot: "#f59e0b" }, /* the true amber — home */
+    studio:  { wash: "#fdf0d5", deep: "#92400e", dot: "#d97706" }, /* amber family, gold shade */
+    library: { wash: "#fdf6e3", deep: "#a16207", dot: "#ca8a04" }, /* amber family, sand shade */
+    pinup:   { wash: "#e3f6ff", deep: "#0b7cb5", dot: "#3fc6ff" }, /* Ben's real cherenkov cyan */
+    modelshop:{ wash: "#eef2ff", deep: "#4338ca", dot: "#6366f1" } /* the site's own indigo accent */
+  };
+
   var ROOMS = [
-    { key: "hearth",    name: "the hearth",   href: "index.html",     x: 230, y: 40,  w: 260, h: 360, hearth: true, wash: "#fdf7ec",
+    { key: "hearth",    name: "the hearth",   href: "index.html",     x: 230, y: 40,  w: 260, h: 360, hearth: true, wash: "#fdf7ec", hue: "hearth",
       desc: "The Hearth — the front of house. Each week's headline conversation and the studio life around it. It changes every Friday." },
-    { key: "studio",    name: "studio floor", href: "studio.html",    x: 30,  y: 80,  w: 200, h: 320, wash: "#f9f8f5", labelSide: "right",
-      desc: "The Studio Floor — one desk per tool in real use: what prompted it, what it changed on an ordinary Tuesday, and what broke." },
-    { key: "pinup",     name: "pin-up wall",  href: "pinup.html",     x: 490, y: 40,  w: 210, h: 150, wash: "#fafaf7",
-      desc: "The Pin-up Wall — the feedback loop itself. Dated WIN and FAIL pins, equal typography. The fails are the point." },
-    { key: "modelshop", name: "the charrette", href: "modelshop.html", x: 490, y: 190, w: 210, h: 105, wash: "#fafaf7",
-      desc: "The Charrette — where this is heading: the ideas ahead of the built tools, at every stage from pushed to parked to abandoned." },
-    { key: "library",   name: "the library",  href: "library.html",   x: 490, y: 295, w: 170, h: 105, wash: "#f9f8f5",
+    { key: "studio",    name: "studio floor", href: "studio.html",    x: 30,  y: 80,  w: 200, h: 320, wash: "#f9f8f5", labelSide: "right", labelY: 350, hue: "studio",
+      desc: "The Studio Floor — one desk per tool in real use: the problem, how it works, proof it works, the risk, and what's needed from DT." },
+    { key: "pinup",     name: "pin-up wall",  href: "pinup.html",     x: 490, y: 40,  w: 210, h: 150, wash: "#fafaf7", labelSide: "right", hue: "pinup",
+      desc: "The Pin-up Wall — the standing rules earned from real wins and real fails, not a changelog. The fails are still the point." },
+    { key: "modelshop", name: "the charrette", href: "modelshop.html", x: 490, y: 190, w: 210, h: 105, wash: "#fafaf7", labelSide: "right", hue: "modelshop",
+      desc: "The Charrette — the playbook we're learning from, an honest read of where DIALOG actually stands against it, and the roadmap that follows." },
+    { key: "library",   name: "the library",  href: "library.html",   x: 490, y: 295, w: 170, h: 105, wash: "#f9f8f5", labelSide: "right", planLabel: "library", hue: "library",
       desc: "The Library — a map of what the firm knows: where the knowledge lives, what shape it's in, and what it would take to make it answer questions." }
   ];
   function cx(r){ return r.x + r.w / 2; }
@@ -52,15 +62,15 @@
       ".fp-room .fp-detail{opacity:.7;transition:opacity .3s ease;}" +
       ".fp-room:hover .fp-detail,.fp-room.peek .fp-detail,.fp-room.here .fp-detail{opacity:1;}" +
       ".fp-room:hover .cell,.fp-room:focus .cell,.fp-room.peek .cell{fill:#fff3da !important;}" +
-      ".fp-room:hover .rname,.fp-room:focus .rname,.fp-room.peek .rname{fill:#b45309;}" +
-      ".fp-room.here .rname{fill:#b45309;}" +
+      ".fp-room:hover .rname,.fp-room:focus .rname,.fp-room.peek .rname{fill:var(--room-deep,#b45309);}" +
+      ".fp-room.here .rname{fill:var(--room-deep,#b45309);}" +
       ".fp-gap{fill:#ffffff;}" +
       ".fp-win{stroke:#26241f;stroke-width:1.1;fill:none;}" +
       ".fp-swing{stroke:#26241f;stroke-width:1.1;fill:none;}" +
       ".fp-ink{stroke:#26241f;stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round;}" +
       /* the "you are here" marker: a small dot with a soft pulsing halo, set beside the room's own label */
-      ".fp-here-dot{fill:#f59e0b;}" +
-      ".fp-here-dot-halo{fill:#f59e0b;opacity:.35;animation:fpGlow 2.6s ease-in-out infinite;}" +
+      ".fp-here-dot{fill:var(--room-dot,#f59e0b);}" +
+      ".fp-here-dot-halo{fill:var(--room-dot,#f59e0b);opacity:.35;animation:fpGlow 2.6s ease-in-out infinite;}" +
       ".fp-meta{fill:#a3a099;font-size:10px;font-weight:600;letter-spacing:.16em;font-family:Inter,sans-serif;}" +
       ".fp-n{fill:#5f5c55;font-family:Fraunces,Georgia,serif;font-style:italic;font-size:12.5px;}" +
       "@keyframes fpGlow{0%,100%{opacity:.2;}50%{opacity:.55;}}" +
@@ -76,8 +86,25 @@
   function badge(r, data) {
     if (r.key === "studio")    { var d = (data.studio && data.studio.desks) || [];  return d.length ? d.length + " desks" : ""; }
     if (r.key === "pinup")     { var p = (data.pinup && data.pinup.pins) || [];     var f = 0, j; for (j = 0; j < p.length; j++) if (p[j].stamp === "FAIL") f++; return p.length ? p.length + " pins · " + f + " fails" : ""; }
-    if (r.key === "modelshop") { var m = (data.modelshop && (data.modelshop.models || data.modelshop.shelves)) || []; return m.length ? m.length + " ideas" : ""; }
-    if (r.key === "library")   { var s = (data.library && data.library.shelves) || []; return s.length ? s.length + " shelves" : ""; }
+    if (r.key === "modelshop") {
+      var rm = data.modelshop && data.modelshop.roadmap;
+      if (rm) {
+        var steps = (rm.pockets || []).length + (rm.opportunity ? 1 : 0) + (rm.forwardRoads || []).length + (rm.offPath || []).length;
+        if (steps) return steps + "-step roadmap";
+      }
+      var m = (data.modelshop && (data.modelshop.models || data.modelshop.shelves)) || [];
+      return m.length ? m.length + " ideas" : "";
+    }
+    if (r.key === "library") {
+      var neigh = (data.library && data.library.neighborhoods) || [];
+      if (neigh.length) {
+        var total = 0, k;
+        for (k = 0; k < neigh.length; k++) total += (neigh[k].shelves || []).length;
+        if (total) return total + " shelves";
+      }
+      var flat = (data.library && data.library.shelves) || [];
+      return flat.length ? flat.length + " shelves" : "";
+    }
     if (r.key === "hearth")    { return "changes weekly"; }
     return "";
   }
@@ -103,7 +130,7 @@
     var g = '<g class="fp-detail">', i;
     if (r.key === "studio") {
       var desks = (data.studio && data.studio.desks) || [];
-      for (i = 0; i < Math.min(desks.length, 6); i++) {
+      for (i = 0; i < Math.min(desks.length, 10); i++) {
         var o = desks[i].owner === "cherenkov" ? "#3fc6ff" : desks[i].owner === "shared" ? "url(#fpShared)" : "#f59e0b";
         var dy = 112 + i * 36;
         g += '<rect x="50" y="' + dy + '" width="28" height="15" rx="1.5" fill="' + o + '" opacity=".8" stroke="#26241f" stroke-width="1"/>';
@@ -169,9 +196,11 @@
     var X = cx(r), Y = cy(r);
     var side = r.labelSide === "right";
     var cls = "fp-room" + (here ? " here" : "") + (side ? " side-label" : "");
-    var g = '<a href="' + r.href + '" class="' + cls + '" data-key="' + r.key + '">';
+    var hue = HUES[r.hue] || HUES.amber;
+    var style = "--room-deep:" + hue.deep + ";--room-wash:" + hue.wash + ";--room-dot:" + hue.dot + ";";
+    var g = '<a href="' + r.href + '" class="' + cls + '" data-key="' + r.key + '" style="' + style + '">';
     g += '<title>' + esc(r.name) + (here ? " — you are here" : "") + '</title>';
-    g += '<rect class="cell" x="' + r.x + '" y="' + r.y + '" width="' + r.w + '" height="' + r.h + '" fill="' + (here ? "#fff3da" : r.wash) + '"/>';
+    g += '<rect class="cell" x="' + r.x + '" y="' + r.y + '" width="' + r.w + '" height="' + r.h + '" fill="' + (here ? hue.wash : r.wash) + '"/>';
     g += details(r, data);
 
     // the label: centered, low in the room, by default — clear of the furniture
@@ -179,7 +208,7 @@
     // spot, so its label moves to the room's clear side instead, right-aligned.
     var anchor = side ? "end" : "middle";
     var lx = side ? (r.x + r.w - 14) : X;
-    var ly = side ? Y : (r.key === "hearth" ? Y + 26 : Y + 14);
+    var ly = (r.labelY !== undefined) ? r.labelY : (side ? Y : (r.key === "hearth" ? Y + 26 : Y + 9));
 
     if (here) {
       var dotY = ly - (side ? 19 : 17);
@@ -187,7 +216,7 @@
       g += '<circle class="fp-here-dot" cx="' + lx + '" cy="' + dotY + '" r="4"/>';
     }
 
-    g += '<text class="rname" x="' + lx + '" y="' + ly + '" text-anchor="' + anchor + '">' + esc(r.name) + '</text>';
+    g += '<text class="rname" x="' + lx + '" y="' + ly + '" text-anchor="' + anchor + '">' + esc(r.planLabel || r.name) + '</text>';
     var b = badge(r, data);
     if (b) g += '<text class="fp-badge" x="' + lx + '" y="' + (ly + 17) + '" text-anchor="' + anchor + '">' + esc(b) + '</text>';
     return g + '</a>';
@@ -230,7 +259,7 @@
            '<path class="fp-ink" d="M-4 -1 L0 -9 L4 -1"/><text class="fp-n" x="0" y="27" text-anchor="middle">N</text></g>';
     // title block + a scale bar that tells the truth
     svg += '<text class="fp-meta" x="20" y="452">DIALOG INTELLIGENCE</text>';
-    svg += '<text class="fp-meta" x="710" y="452" text-anchor="end">FLOOR PLAN &#183; v2026-07-09.2</text>';
+    svg += '<text class="fp-meta" x="710" y="452" text-anchor="end">FLOOR PLAN &#183; v2026-07-24.1</text>';
     svg += '<g transform="translate(20,464)">' +
            '<rect x="0" y="0" width="24" height="4" fill="#26241f"/><rect x="24" y="0" width="24" height="4" fill="none" stroke="#26241f" stroke-width=".8"/>' +
            '<rect x="48" y="0" width="24" height="4" fill="#26241f"/>' +

@@ -3,8 +3,9 @@
      the fire holds this week's conversation and can page back through older weeks; the bar
      holds the real per-topic side-talk pulled live from the desks; the gallery shows the
      latest pin. A short intro up top orients anyone arriving for the first time.
-     ?mode=boardroom switches this same page into presentation mode for DT/partner visits —
-     same shell, same nav, no separate page. -->
+     The Boardroom (presentation mode) was retired 2026-07-24 — DT reviews the real Studio
+     Floor now, not a separate pitch page; a second hand-authored surface just meant two
+     things to keep honest instead of one. -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -30,6 +31,15 @@
   .intro-voice.amber{border-left-color:var(--amber);}
   .intro-voice.ben{border-left-color:var(--cheren);}
   .intro-voice b{display:block;color:#2b2a27;font-size:.82rem;margin-bottom:2px;}
+
+  .intro-journey-label{font-size:.78rem;font-weight:700;color:#b45309;margin:18px 0 10px;}
+  .intro-journey{margin:0;padding:0;list-style:none;counter-reset:journey;}
+  .intro-journey-item{display:flex;gap:12px;align-items:baseline;padding:9px 0;border-top:1px dashed var(--line);}
+  .intro-journey-item:first-child{border-top:none;}
+  .intro-journey-n{flex:0 0 auto;font-family:var(--serif);font-weight:700;font-size:.86rem;color:#b45309;width:16px;}
+  .intro-journey-body{flex:1;min-width:0;}
+  .intro-journey-body a{font-weight:700;font-size:.9rem;}
+  .intro-journey-why{display:block;font-size:.82rem;color:#8a8579;line-height:1.55;margin-top:2px;}
 
   /* since your last visit */
   .since{max-width:640px;margin:18px auto 0;text-align:center;font-size:.85rem;color:#8a8579;}
@@ -118,22 +128,6 @@
   .rule h4{margin:0 0 6px;font-size:.92rem;}
   .rule p{font-size:.86rem;color:#5d5a52;line-height:1.65;margin:0;}
 
-  /* the Boardroom, in presentation mode */
-  .board-toggle{text-align:center;font-size:.84rem;margin:16px 0 0;color:#8a8579;}
-  .board{max-width:720px;margin:30px auto 0;padding:0 24px;}
-  .board-sub{font-size:.66rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:#a09a8e;margin:32px 0 12px;}
-  .board-sub:first-child{margin-top:0;}
-  .bstat-row{position:relative;padding-left:20px;margin:0 0 12px;font-size:.96rem;line-height:1.6;color:#3a3833;}
-  .bstat-row::before{content:"";position:absolute;left:0;top:.55em;width:7px;height:7px;border-radius:50%;background:var(--amber);}
-  .brisk-row{position:relative;padding-left:20px;margin:0 0 11px;font-size:.9rem;line-height:1.62;color:#5d5a52;}
-  .brisk-row::before{content:"";position:absolute;left:0;top:.5em;width:7px;height:7px;border-radius:50%;background:var(--cheren);}
-  .broad-row{border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin-bottom:12px;background:var(--card);}
-  .broad-row .tag{margin-bottom:6px;}
-  .broad-name{display:block;font-weight:700;font-size:.96rem;color:#2b2a27;margin-bottom:4px;}
-  .broad-text{margin:0;font-size:.88rem;line-height:1.6;color:#5d5a52;}
-  .bask{font-family:var(--serif);font-style:italic;font-size:1.1rem;line-height:1.62;color:#2b2a27;margin:32px 0 0;text-align:center;}
-  .board-back{text-align:center;margin:26px 0 10px;font-size:.86rem;}
-
   @media (prefers-reduced-motion: reduce){.fire-wrap::before{animation:none;}.fire-handoff{transition:none;opacity:1;}}
 </style>
 </head>
@@ -168,8 +162,6 @@
 
 <div class="now-label" id="nowLabel">Now showing</div>
 <div class="now" id="nowPanel"></div>
-<p class="board-toggle" id="boardToggle"></p>
-
 <div id="hearthMain">
   <div class="room">
     <div>
@@ -200,19 +192,6 @@
   <div class="rules" id="rulesMount"></div>
 </div>
 
-<div id="boardroomMain" style="display:none;">
-  <div class="board">
-    <p class="board-sub">The value</p>
-    <div id="bStats"></div>
-    <p class="board-sub">Why this is safe to publish</p>
-    <div id="bRisk"></div>
-    <p class="board-sub" id="bRoadmapTitle"></p>
-    <div id="bRoadmap"></div>
-    <p class="bask" id="bAsk"></p>
-    <p class="board-back"><a href="index.html">&larr; Back to the Hearth</a></p>
-  </div>
-</div>
-
 <footer class="site-footer">
   <div class="container">
     <span id="footerLine"></span>
@@ -226,9 +205,7 @@
 <script>
 (function(){
 var C = window.HEARTH_PAYLOAD, R = window.ROOMS_PAYLOAD || {};
-var B = R.boardroom || {};
 var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-var mode = /(?:^|[?&])mode=boardroom(?:&|$)/.test(location.search) ? "boardroom" : "hearth";
 var weeks = C.weeks && C.weeks.length ? C.weeks : [C.spots.fire];
 
 function slugify(s){ return String(s).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,""); }
@@ -256,48 +233,6 @@ var fails = pins.filter(function(p){ return p.stamp === "FAIL"; }).length;
 var desks = (R.studio && R.studio.desks && R.studio.desks.length) || 0;
 var models = (R.modelshop && (R.modelshop.models || R.modelshop.shelves) || []).length;
 
-if (mode === "boardroom") {
-  /* ---- presentation mode: swap the hero + main content for the ask ---- */
-  document.title = "DIALOG Intelligence — The Boardroom";
-  document.getElementById("heroEyebrow").textContent = B.eyebrow || "THE BOARDROOM";
-  document.getElementById("heroH1").textContent = B.h1 || "The ask.";
-  document.getElementById("planTitle").style.display = "none";
-  var lead = document.getElementById("heroLead");
-  lead.textContent = B.lead || "";
-  lead.style.display = "";
-  document.getElementById("nowLabel").style.display = "none";
-  document.getElementById("nowPanel").style.display = "none";
-  document.getElementById("boardToggle").style.display = "none";
-  document.getElementById("hearthMain").style.display = "none";
-  document.getElementById("boardroomMain").style.display = "";
-
-  var sEl = document.getElementById("bStats");
-  (B.numbers || []).forEach(function(n){
-    var p = document.createElement("p"); p.className = "bstat-row"; p.textContent = n; sEl.appendChild(p);
-  });
-  var rEl = document.getElementById("bRisk");
-  (B.risk || []).forEach(function(n){
-    var p = document.createElement("p"); p.className = "brisk-row"; p.textContent = n; rEl.appendChild(p);
-  });
-  document.getElementById("bRoadmapTitle").textContent = B.roadmapTitle || "Roadmap";
-  var rmEl = document.getElementById("bRoadmap");
-  (B.roadmap || []).forEach(function(item){
-    var row = document.createElement("div"); row.className = "broad-row";
-    var stateClass = item.state === "done" ? "win" : item.state === "here" ? "amber" : "";
-    row.innerHTML = '<span class="tag ' + stateClass + '"></span><span class="broad-name"></span><p class="broad-text"></p>';
-    row.querySelector(".tag").textContent = item.state;
-    row.querySelector(".broad-name").textContent = item.name;
-    row.querySelector(".broad-text").textContent = item.text;
-    rmEl.appendChild(row);
-  });
-  document.getElementById("bAsk").textContent = B.ask || "";
-  return; /* the rest of this closure is normal-Hearth-only */
-}
-
-/* ---- normal Hearth view below ---- */
-document.getElementById("boardToggle").innerHTML =
-  '<a href="index.html?mode=boardroom">Presenting to DT? The Boardroom view &rarr;</a>';
-
 /* ---- the intro — orient a first-time visitor ---- */
 (function(){
   var intro = C.intro; if (!intro) return;
@@ -309,6 +244,25 @@ document.getElementById("boardToggle").innerHTML =
   box.querySelector("h2").textContent = intro.title || "";
   var ps = box.querySelectorAll("p");
   (intro.body || []).forEach(function(t, i){ ps[i].textContent = t; });
+
+  if (intro.journey && intro.journey.length){
+    var jLabel = document.createElement("p"); jLabel.className = "intro-journey-label";
+    jLabel.textContent = intro.journeyLabel || "Read the rooms in this order:";
+    box.appendChild(jLabel);
+    var jList = document.createElement("ol"); jList.className = "intro-journey";
+    intro.journey.forEach(function(step){
+      var li = document.createElement("li"); li.className = "intro-journey-item";
+      var n = document.createElement("span"); n.className = "intro-journey-n"; n.textContent = step.n + ".";
+      var body = document.createElement("span"); body.className = "intro-journey-body";
+      var a = document.createElement("a"); a.href = step.href; a.textContent = step.room;
+      var why = document.createElement("span"); why.className = "intro-journey-why"; why.textContent = step.why;
+      body.appendChild(a); body.appendChild(why);
+      li.appendChild(n); li.appendChild(body);
+      jList.appendChild(li);
+    });
+    box.appendChild(jList);
+  }
+
   if (C.voices && C.voices.length){
     var note = document.createElement("p"); note.className = "who-note";
     note.textContent = intro.voicesNote || "Two voices narrate the building:";

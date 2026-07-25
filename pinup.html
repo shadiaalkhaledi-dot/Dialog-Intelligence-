@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<!-- Pin-up Wall — the feedback loop itself. Pins render live from assets/rooms-payload.js.
-     What this room is FOR: it's the ritual that keeps the studio honest. In architecture a
-     "pin-up" is where you tack work on a wall and take the critique out loud. BIG ran it
-     firm-wide every two weeks; this is the two-person prototype. A scoreboard, a WIN/FAIL
-     filter, a cadence meter against our own "a month with no FAIL means trouble" rule, and
-     a link from each pin to the desk it became — so the loop is visible, not just claimed.
-     Narrated by Feynman (Cherenkov blue). -->
+<!-- Pin-up Wall — now "the rulebook," rebuilt 2026-07-24. Pins render live from
+     assets/rooms-payload.js, but the primary view leads with the RULE each pin earned
+     (the durable, cross-cutting practice principle), not the raw chronology -- that's what
+     makes this room worth visiting instead of a diary of old bugs. Project-specific history
+     lives on the Studio Floor now; this wall is for standing rules that apply regardless of
+     which project you're in. Grouped by category (how we build / how we judge), each rule
+     expands to its full receipt: stamp, date, tried/happened/verdict, and the desk it came
+     from if any. The scoreboard and cadence meter stay -- proof the rules keep getting
+     earned, not just accumulated. A Timeline view keeps the old chronological browse for
+     anyone who wants it. Narrated by Feynman (Cherenkov blue). -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -61,6 +64,26 @@
   .pin-loop a:hover{color:var(--cheren-deep);}
   .pin-loop .arm{color:var(--ink-faint);font-style:italic;font-family:var(--serif);}
   .wall-empty{text-align:center;color:var(--ink-faint);font-style:italic;font-family:var(--serif);padding:24px 0;}
+
+  /* view toggle: rules (default) vs timeline */
+  .view-toggle{display:flex;gap:8px;margin:0 0 16px;}
+  .view-toggle button{font:inherit;font-size:.8rem;font-weight:700;color:var(--ink-soft);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 16px;cursor:pointer;transition:border-color .15s,color .15s,background .15s;}
+  .view-toggle button:hover{color:#2b2a27;}
+  .view-toggle button.on{background:var(--cheren-wash);color:var(--cheren-deep);border-color:var(--cheren-line);}
+
+  /* rules view: grouped, expandable to the receipt */
+  .rule-group-label{font-size:.66rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);margin:22px 0 10px;}
+  .rule-group-label:first-child{margin-top:0;}
+  .rule-row{border:1px solid var(--line);border-radius:10px;background:var(--card);margin-bottom:10px;overflow:hidden;}
+  .rule-row-head{width:100%;text-align:left;display:flex;align-items:baseline;gap:10px;font:inherit;background:none;border:none;cursor:pointer;padding:13px 16px;}
+  .rule-row-head:hover{background:var(--wash);}
+  .rule-row-head .stamp{flex:0 0 auto;}
+  .rule-row-head .rule-text{flex:1;font-size:.9rem;line-height:1.5;color:#2b2a27;font-weight:600;}
+  .rule-row-head .chev{flex:0 0 auto;color:var(--ink-faint);transition:transform .2s;}
+  .rule-row.open .rule-row-head .chev{transform:rotate(180deg);}
+  .rule-receipt{display:none;padding:0 16px 16px;border-top:1px dashed var(--line);margin-top:0;}
+  .rule-row.open .rule-receipt{display:block;padding-top:14px;}
+  .rule-receipt .pin-row{font-size:.86rem;}
 </style>
 </head>
 <body>
@@ -83,7 +106,7 @@
   <div class="container" style="text-align:center;">
     <span class="eyebrow">POSTED OUT — LAYER THREE</span>
     <h1>The Pin-up Wall</h1>
-    <p class="lead" style="margin:0 auto;">Dated pins, WIN or FAIL, equal typography. This wall is the actual feedback loop — the rest of the building is context.</p>
+    <p class="lead" style="margin:0 auto;">The rules we now follow, each one earned from a real win or fail. Check here before starting anything new — chances are a rule already applies.</p>
     <div id="floorplanMount"></div>
   </div>
 </header>
@@ -91,26 +114,32 @@
 <div class="wall">
   <div class="why">
     <h4>What this wall is for</h4>
-    <p>This is the studio's track record. The desks tell you what each tool <em>is</em>; this wall tells you whether we're still experimenting and staying honest about it — every attempt, win or fail, dated and given equal weight, newest on top. A "pin-up" is the old studio ritual: tack the work up and take the critique out loud, together. BIG ran it firm-wide every two weeks; this is the two-person prototype, and it scales the day the firm wants it to. The rule that keeps it honest, measured by the meter below: if a month passes with no FAIL pinned, we've either stopped experimenting or started hiding the misses.</p>
+    <p>The Studio Floor tells you what each project <em>is</em> — status, risk, what we need. This wall is different on purpose: it's the standing rules we follow because a real win or fail earned them, independent of any one project. A rule can come from building a tool, or from building this site itself; either way it applies the next time, wherever "next time" happens to be. A "pin-up" is the old studio ritual: tack the work up and take the critique out loud, together. BIG ran it firm-wide every two weeks; this is the two-person prototype, and it scales the day the firm wants it to. The rule that keeps it honest, measured by the meter below: if a month passes with no FAIL pinned, we've either stopped experimenting or started hiding the misses.</p>
   </div>
 
   <div class="score" id="scoreMount"></div>
   <div class="cadence" id="cadenceMount"></div>
 
-  <div class="wall-filter" id="filterMount">
+  <div class="view-toggle" id="viewToggle">
+    <button data-v="rules" class="on">Rules</button>
+    <button data-v="timeline">Timeline</button>
+  </div>
+
+  <div class="wall-filter" id="filterMount" style="display:none;">
     <span class="lbl">Show</span>
     <button data-f="all" class="on">All</button>
     <button data-f="WIN" class="win">Wins</button>
     <button data-f="FAIL" class="fail">Fails</button>
   </div>
 
-  <div id="wallMount"></div>
+  <div id="rulesMount"></div>
+  <div id="wallMount" style="display:none;"></div>
 </div>
 
 <footer class="site-footer">
   <div class="container">
     <span>A working studio that tells the truth about its own state. Knowledge, not people.</span>
-    <span>Drafted by Shadi &amp; Ben, narrated by Claude. &middot; v2026-07-08.11</span>
+    <span>Drafted by Shadi &amp; Ben, narrated by Claude. &middot; v2026-07-24.1</span>
   </div>
 </footer>
 
@@ -182,7 +211,64 @@ window.renderFloorplan(document.getElementById("floorplanMount"), "pinup");
       '<p class="ch-note">The rule: a month (30 days) with no FAIL means we stopped experimenting — or started lying to the wall.</p>';
   })();
 
-  /* ---- the pins, with a link to the desk each became ---- */
+  /* ---- the rules view: grouped by category, expandable to the receipt ---- */
+  var CATEGORY_LABEL = { build: "How we build", judge: "How we judge" };
+  var rulesMount = document.getElementById("rulesMount");
+
+  function buildReceipt(p){
+    var wrap = document.createElement("div"); wrap.className = "rule-receipt";
+    wrap.innerHTML =
+      '<p class="pin-row tried"><b>Tried</b> <span></span></p>' +
+      '<p class="pin-row happened"><b>Happened</b> <span></span></p>' +
+      '<p class="pin-row verdict"><b>Verdict</b> <span></span></p>';
+    wrap.querySelector(".tried span").textContent = p.tried;
+    wrap.querySelector(".happened span").textContent = p.happened;
+    wrap.querySelector(".verdict span").textContent = p.verdict;
+    if (p.desk && deskNames.indexOf(p.desk) >= 0){
+      var loop = document.createElement("p"); loop.className = "pin-loop";
+      var verb = p.stamp === "FAIL" ? "became the" : "on the";
+      loop.innerHTML = '<span class="arm">&#8618; ' + verb + ' </span><a href="studio.html#' + slugify(p.desk) + '">' + p.desk.replace(/^The\s+/i,"") + ' desk &rarr;</a>';
+      wrap.appendChild(loop);
+    }
+    return wrap;
+  }
+
+  function renderRules(){
+    rulesMount.innerHTML = "";
+    if (!allPins.length){
+      var e = document.createElement("p"); e.className = "wall-empty";
+      e.textContent = "No rules earned yet.";
+      rulesMount.appendChild(e); return;
+    }
+    var withRules = allPins.filter(function(p){ return p.rule; });
+    var groups = {};
+    withRules.forEach(function(p){
+      var cat = p.category || "judge";
+      (groups[cat] = groups[cat] || []).push(p);
+    });
+    Object.keys(CATEGORY_LABEL).forEach(function(cat){
+      if (!groups[cat] || !groups[cat].length) return;
+      var label = document.createElement("p"); label.className = "rule-group-label";
+      label.textContent = CATEGORY_LABEL[cat];
+      rulesMount.appendChild(label);
+      groups[cat].forEach(function(p){
+        var row = document.createElement("div"); row.className = "rule-row";
+        var head = document.createElement("button"); head.className = "rule-row-head"; head.type = "button";
+        head.innerHTML = '<span class="stamp"></span><span class="rule-text"></span><span class="chev">&#9660;</span>';
+        head.querySelector(".stamp").textContent = p.stamp;
+        head.querySelector(".stamp").className = "stamp " + p.stamp;
+        head.querySelector(".rule-text").textContent = p.rule;
+        row.appendChild(head);
+        var receipt = buildReceipt(p);
+        row.appendChild(receipt);
+        head.addEventListener("click", function(){ row.classList.toggle("open"); });
+        rulesMount.appendChild(row);
+      });
+    });
+  }
+  renderRules();
+
+  /* ---- the timeline: raw chronological pins, with a link to the desk each became ---- */
   var mount = document.getElementById("wallMount");
   var filter = "all";
 
@@ -231,6 +317,22 @@ window.renderFloorplan(document.getElementById("floorplanMount"), "pinup");
     });
   });
   render();
+
+  /* ---- view toggle: rules (default) vs timeline ---- */
+  var vt = document.getElementById("viewToggle");
+  var rulesMountEl = document.getElementById("rulesMount");
+  var wallMountEl = document.getElementById("wallMount");
+  vt.querySelectorAll("button").forEach(function(b){
+    b.addEventListener("click", function(){
+      var view = b.getAttribute("data-v");
+      vt.querySelectorAll("button").forEach(function(x){ x.classList.remove("on"); });
+      b.classList.add("on");
+      var isRules = view === "rules";
+      rulesMountEl.style.display = isRules ? "" : "none";
+      wallMountEl.style.display = isRules ? "none" : "";
+      fm.style.display = isRules ? "none" : "";
+    });
+  });
 })();
 </script>
 <script src="assets/narrator.js"></script>

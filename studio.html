@@ -1,28 +1,34 @@
 <!DOCTYPE html>
-<!-- Studio Floor — the desks, rendered live from assets/rooms-payload.js.
-     You arrive at a menu: every project as a card, grouped by owner. Pick one and
-     that desk opens on its own — the full anatomy (annoyance → does → Tuesday →
-     broke → steal), the built-by voices, and any recent activity pulled from the
-     Pin-up Wall. Deep-linkable: studio.html#the-work-tracker opens that desk directly,
-     which is how the Hearth's bar links straight through to a project. -->
+<!-- Studio Floor -- the desks, rendered live from assets/rooms-payload.js.
+     You arrive at a menu: every project as a card, grouped by owner. Cards lead with STAGE
+     (concept/prototype/pilot/live/shelved) -- colour is maturity, not owner; owner is a small
+     initial badge. Pick one and that desk opens as one continuous, proper project record:
+     a "For DT" box (where it's at, what's needed), then the problem, how it works, proof it
+     works (an actual before/after), the risk, and the lesson -- nothing collapsed, nothing
+     hidden. The discussion (Amber + Feynman actually working through it) runs underneath,
+     and recent activity from the Pin-up Wall closes it out. Deep-linkable:
+     studio.html#the-work-tracker opens that desk directly, which is how the Hearth's bar
+     links straight through to a project. -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DIALOG Intelligence — Studio Floor</title>
+<title>DIALOG Intelligence -- Studio Floor</title>
 <link rel="stylesheet" href="assets/style.css">
 <style>
   .nar-caret{background:#f59e0b !important;}
   .floor{max-width:820px;margin:8px auto 0;padding:0 24px;}
   .floor-lead{text-align:center;font-size:.85rem;color:#a09a8e;margin:0 0 6px;}
 
-  /* legend: who's who, at a glance */
-  .legend{display:flex;justify-content:center;gap:22px;margin:14px 0 24px;font-size:.8rem;color:var(--ink-soft);flex-wrap:wrap;}
-  .legend .chip{display:flex;align-items:center;gap:7px;}
-  .legend .dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
-  .legend .dot.amber{background:var(--amber);}
-  .legend .dot.cherenkov{background:var(--cheren);}
-  .legend .dot.shared{background:linear-gradient(135deg,var(--amber),var(--cheren));}
+  /* legend: what colour means now */
+  .legend{display:flex;justify-content:center;gap:16px;margin:14px 0 24px;font-size:.78rem;color:var(--ink-soft);flex-wrap:wrap;}
+  .legend .chip{display:flex;align-items:center;gap:6px;}
+  .legend .dot{width:9px;height:9px;border-radius:50%;display:inline-block;}
+  .legend .dot.concept{background:var(--ink-faint);}
+  .legend .dot.prototype{background:var(--cheren-deep);}
+  .legend .dot.pilot{background:var(--amber-deep);}
+  .legend .dot.live{background:var(--win);}
+  .legend .dot.shelved{background:var(--fail);}
 
   /* ---- the menu: pick a project ---- */
   .picker-hint{text-align:center;font-size:.8rem;color:#a09a8e;margin:0 0 22px;font-style:italic;font-family:var(--serif);}
@@ -30,22 +36,21 @@
   .menu-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
   @media(max-width:640px){.menu-grid{grid-template-columns:1fr;}}
   .menu-card{display:block;text-align:left;width:100%;font:inherit;cursor:pointer;
-    background:var(--card);border:1px solid var(--line);border-left-width:3px;border-radius:var(--radius);
-    padding:16px 18px;transition:border-color .15s,box-shadow .2s,transform .2s;}
+    background:var(--card);border:1px solid var(--line);border-top-width:3px;border-radius:var(--radius);
+    padding:14px 16px;transition:border-color .15s,box-shadow .2s,transform .2s;}
   .menu-card:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:#dcdad5;}
-  .menu-card.amber{border-left-color:var(--amber);}
-  .menu-card.cherenkov{border-left-color:var(--cheren);}
-  .menu-card.shared{border-left-color:transparent;border-image:linear-gradient(180deg,var(--amber),var(--cheren)) 1;}
-  .menu-card h3{font-size:1.04rem;margin:0 0 6px;}
-  .menu-card .mc-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px;}
-  .menu-card .mc-status{font-size:.64rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);}
-  .menu-card .mc-teaser{font-size:.86rem;line-height:1.55;color:var(--ink-soft);margin:0;}
-  .menu-card .mc-go{display:inline-block;margin-top:10px;font-size:.78rem;font-weight:700;color:var(--amber-deep);}
-  .menu-card.cherenkov .mc-go{color:var(--cheren-deep);}
-  .menu-card .mc-activity{margin-top:9px;font-size:.72rem;color:var(--ink-faint);}
-  .menu-card .mc-activity .stamp{font-size:.54rem;padding:2px 7px;margin-right:5px;}
+  .menu-card.concept{border-top-color:var(--ink-faint);}
+  .menu-card.prototype{border-top-color:var(--cheren-deep);}
+  .menu-card.pilot{border-top-color:var(--amber-deep);}
+  .menu-card.live{border-top-color:var(--win);}
+  .menu-card.shelved{border-top-color:var(--fail);}
+  .mc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+  .menu-card h3{font-size:1.02rem;margin:0 0 4px;}
+  .menu-card .mc-teaser{font-size:.84rem;line-height:1.5;color:var(--ink-soft);margin:0 0 4px;}
+  .menu-card .mc-track{margin:10px 0;}
+  .menu-card .mc-foot{display:flex;justify-content:space-between;align-items:center;font-size:.72rem;color:var(--ink-faint);padding-top:8px;border-top:1px dashed var(--line);}
 
-  /* ---- the detail: one open desk ---- */
+  /* ---- the detail: one open desk, continuous, nothing collapsed ---- */
   .back-row{margin:0 0 18px;}
   .back-btn{font:inherit;font-size:.82rem;font-weight:700;color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;border-bottom:1px solid var(--amber);}
   .back-btn:hover{color:var(--amber-deep);}
@@ -53,6 +58,8 @@
   .detail-nav button{font:inherit;font-size:.8rem;font-weight:600;color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;}
   .detail-nav button:hover:not(:disabled){color:var(--amber-deep);}
   .detail-nav button:disabled{opacity:.35;cursor:default;}
+  .desk-head{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:2px;}
+  .desk-head .dh-sub{font-size:.76rem;color:var(--ink-faint);margin-top:2px;}
 
   .desk .exchange{margin-top:20px;padding-top:16px;border-top:1px dashed var(--line);}
   .desk .exchange-label{font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 12px;}
@@ -66,7 +73,6 @@
   .activity-verdict{flex:1 1 220px;}
 
   .desk.retired{opacity:.58;}
-  .desk.retired .desk-meta .tag:first-child::after{content:" · retired";}
 </style>
 </head>
 <body>
@@ -87,9 +93,9 @@
 
 <header class="hero">
   <div class="container" style="text-align:center;">
-    <span class="eyebrow">POSTED OUT — LAYER THREE</span>
+    <span class="eyebrow">POSTED OUT -- LAYER THREE</span>
     <h1>The Studio Floor</h1>
-    <p class="lead" style="margin:0 auto;">One desk per tool, narrated by whoever built it. Pick a project to open its desk — every one answers the same five questions, and one of them is <em>what broke</em>.</p>
+    <p class="lead" style="margin:0 auto;">One desk per tool. Colour shows <em>stage</em> -- concept, prototype, pilot, or live. Open a desk for the problem, how it works, proof it works, the risk, and the lesson -- a proper record, not a highlight reel.</p>
     <div id="floorplanMount"></div>
   </div>
 </header>
@@ -97,9 +103,11 @@
 <div class="floor">
   <p class="floor-lead" id="floorLead"></p>
   <div class="legend">
-    <span class="chip"><span class="dot amber"></span>Shadi's</span>
-    <span class="chip"><span class="dot cherenkov"></span>Ben's</span>
-    <span class="chip"><span class="dot shared"></span>Shared</span>
+    <span class="chip"><span class="dot concept"></span>Concept</span>
+    <span class="chip"><span class="dot prototype"></span>Prototype</span>
+    <span class="chip"><span class="dot pilot"></span>Pilot</span>
+    <span class="chip"><span class="dot live"></span>Live</span>
+    <span class="chip"><span class="dot shelved"></span>Shelved</span>
   </div>
   <div id="menuView"></div>
   <div id="detailView" style="display:none;"></div>
@@ -108,7 +116,7 @@
 <footer class="site-footer">
   <div class="container">
     <span>A working studio that tells the truth about its own state. Knowledge, not people.</span>
-    <span>Drafted by Shadi &amp; Ben, narrated by Claude. &middot; v2026-07-09.4</span>
+    <span>Drafted by Shadi &amp; Ben, narrated by Claude. &middot; v2026-07-24.4</span>
   </div>
 </footer>
 
@@ -116,12 +124,12 @@
 window.NARRATOR = {
   page: "studio",
   lines: [
-    "The Studio Floor — one desk per tool, five honest questions each. The annoyance, what it does, a Tuesday before and after, what broke, and what you should steal.",
-    "Pick a project below and its desk opens on its own. What broke is mandatory — a desk that can't answer it hasn't been used enough to be on this floor.",
-    "Every desk talks. Solo desks get one of us thinking out loud; the two-tone ones get an actual argument."
+    "The Studio Floor -- one desk per tool. Colour is stage: concept, prototype, pilot, live, or shelved.",
+    "Pick a project below. Every desk now reads like an actual project record -- the problem, how it works, proof it works, the risk, the lesson -- with the DT box up top and the discussion underneath.",
+    "The discussion is where we actually argue -- about readiness, about risk, about whether it's real yet. That part doesn't get to be tidy."
   ],
-  revisit: "Back to the floor. Pick a desk — what broke included, as always.",
-  scrollLine: "Take your time. The fails are the good part.",
+  revisit: "Back to the floor. Pick a desk -- the risk section included, as always.",
+  scrollLine: "Take your time. The risk section is the good part.",
   poke: "That's a real desk. Coffee ring and all."
 };
 </script>
@@ -140,11 +148,28 @@ window.renderFloorplan(document.getElementById("floorplanMount"), "studio");
   var detailView = document.getElementById("detailView");
   var floorLead = document.getElementById("floorLead");
 
+  var STAGE_TRACK = ["concept","prototype","pilot","live"];
+  var STAGE_LABEL = { concept:"Concept", prototype:"Prototype", pilot:"Pilot", live:"Live", shelved:"Shelved" };
+
   function slugify(s){ return String(s).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,""); }
   function ownerKey(d){ return d.owner === "shared" ? "shared" : (d.owner === "cherenkov" ? "cherenkov" : "amber"); }
+  function initials(d){ var o = ownerKey(d); return o === "shared" ? "S+B" : (o === "cherenkov" ? "B" : "S"); }
+  function stageOf(d){ return d.stage || "concept"; }
   function firstSentence(s){ if(!s) return ""; var m = /^(.*?[.!?])(\s|$)/.exec(s); return m ? m[1] : s; }
   function whoLabel(w){ return w === "amber" ? "AMBER" : "FEYNMAN"; }
   desks.forEach(function(d){ d.__slug = slugify(d.name); });
+
+  function splitProof(text){
+    if (!text) return null;
+    var m = /^([\s\S]*?)\bAfter\b[^:]*:\s*([\s\S]*)$/.exec(text);
+    if (!m) return null;
+    var afterText = m[2].trim();
+    var beforeRaw = m[1].trim();
+    var bm = /^Before\b\s*[,:]?\s*(?:both of us\s*:?\s*)?(.*)$/.exec(beforeRaw);
+    var beforeText = bm ? bm[1].replace(/^:\s*/, "").trim() : beforeRaw;
+    if (!beforeText || !afterText) return null;
+    return { before: beforeText, after: afterText };
+  }
 
   function typeInto(el, txt, cb){
     if (reduced){ el.textContent = txt; if (cb) cb(); return; }
@@ -159,12 +184,42 @@ window.renderFloorplan(document.getElementById("floorplanMount"), "studio");
     })();
   }
 
+  function buildStageTrack(d, withLabels){
+    var stage = stageOf(d);
+    var idx = STAGE_TRACK.indexOf(stage);
+    var wrap = document.createElement("div"); wrap.className = "stage-track";
+    STAGE_TRACK.forEach(function(s, i){
+      var seg = document.createElement("span"); seg.className = "seg" + (idx >= 0 && i <= idx ? " on " + s : "");
+      wrap.appendChild(seg);
+    });
+    if (!withLabels) return wrap;
+    var outer = document.createElement("div");
+    outer.appendChild(wrap);
+    var labels = document.createElement("div"); labels.className = "stage-track-labels";
+    STAGE_TRACK.forEach(function(s, i){
+      var span = document.createElement("span"); span.textContent = STAGE_LABEL[s];
+      if (i === idx) span.className = "current";
+      labels.appendChild(span);
+    });
+    outer.appendChild(labels);
+    return outer;
+  }
+
+  function askSummary(d){
+    var asks = d.asks || [];
+    var open = asks.filter(function(a){ return a.status === "open"; }).length;
+    var span = document.createElement("span");
+    if (!asks.length){ span.className = "ask-flag"; span.textContent = "No asks logged"; return span; }
+    if (open > 0){ span.className = "ask-flag open"; span.textContent = open + (open > 1 ? " asks" : " ask"); return span; }
+    span.className = "ask-flag answered"; span.textContent = "Asks answered"; return span;
+  }
+
   function buildExchange(script){
     var wrap = document.createElement("div"); wrap.className = "exchange";
     var voices = {}; script.forEach(function(l){ voices[l.who] = true; });
     var solo = Object.keys(voices).length === 1;
     var label = document.createElement("p"); label.className = "exchange-label";
-    label.textContent = solo ? (whoLabel(script[0].who) + ", ON THIS DESK") : "AMBER + FEYNMAN, ON THIS DESK";
+    label.textContent = "THE DISCUSSION" + (solo ? " -- " + whoLabel(script[0].who) + " ALONE ON THIS ONE" : " -- AMBER + FEYNMAN");
     wrap.appendChild(label);
     var items = script.map(function(l){
       var row = document.createElement("div");
@@ -185,6 +240,17 @@ window.renderFloorplan(document.getElementById("floorplanMount"), "studio");
     return wrap;
   }
 
+  function buildExchangeEmpty(){
+    var wrap = document.createElement("div"); wrap.className = "exchange";
+    var label = document.createElement("p"); label.className = "exchange-label";
+    label.textContent = "THE DISCUSSION";
+    wrap.appendChild(label);
+    var empty = document.createElement("p"); empty.className = "dt-empty";
+    empty.textContent = "No discussion recorded yet for this desk -- add one via the project-update prompt when there's an actual disagreement or decision worth keeping.";
+    wrap.appendChild(empty);
+    return wrap;
+  }
+
   function pinsForDesk(name){ return pins.filter(function(p){ return p.desk === name; }); }
 
   function buildActivity(name){
@@ -192,7 +258,7 @@ window.renderFloorplan(document.getElementById("floorplanMount"), "studio");
     if (!matches.length) return null;
     var wrap = document.createElement("div"); wrap.className = "activity";
     var label = document.createElement("p"); label.className = "activity-label";
-    label.textContent = "RECENT ACTIVITY — FROM THE PIN-UP WALL";
+    label.textContent = "RECENT ACTIVITY -- FROM THE PIN-UP WALL";
     wrap.appendChild(label);
     matches.slice().reverse().forEach(function(p){
       var row = document.createElement("div"); row.className = "activity-row";
@@ -206,7 +272,7 @@ window.renderFloorplan(document.getElementById("floorplanMount"), "studio");
     return wrap;
   }
 
-  var LABELS = { origin: "The annoyance", does: "What it does", tuesday: "A Tuesday, before & after", broke: "What broke", steal: "Steal this" };
+  var RECORD_LABELS = { problem: "The problem", how: "How it works", proof: "Proof it works", risk: "Risk", lesson: "The lesson" };
 
   var groups = [
     { key: "shared", label: "SHARED DESKS", items: [] },
@@ -217,11 +283,51 @@ window.renderFloorplan(document.getElementById("floorplanMount"), "studio");
   desks.forEach(function(d){ byKey[ownerKey(d)].items.push(d); });
 
   /* ---- the menu ---- */
+  function buildAsksSummary(){
+    var open = [];
+    var answeredCount = 0;
+    desks.forEach(function(d){
+      (d.asks || []).forEach(function(a){
+        if (a.status === "open") open.push({ desk: d, text: a.text });
+        else answeredCount++;
+      });
+    });
+    var box = document.createElement("div"); box.className = "asks-summary";
+    var label = document.createElement("p"); label.className = "dt-label"; label.textContent = "OPEN ASKS ACROSS THE FLOOR";
+    box.appendChild(label);
+    if (!open.length){
+      var empty = document.createElement("p"); empty.className = "dt-empty";
+      empty.textContent = answeredCount
+        ? "Nothing open right now -- every logged ask has been answered."
+        : "Nothing open right now -- no asks logged yet.";
+      box.appendChild(empty);
+    } else {
+      open.forEach(function(o){
+        var row = document.createElement("div"); row.className = "ask-row";
+        row.innerHTML = '<span class="ask-chip open">Open</span><span></span>';
+        var span = row.querySelector("span:last-child");
+        var link = document.createElement("a"); link.href = "#" + o.desk.__slug; link.textContent = o.desk.name;
+        link.addEventListener("click", function(e){ e.preventDefault(); openDesk(o.desk.__slug, true); });
+        span.appendChild(link);
+        span.appendChild(document.createTextNode(" -- " + o.text));
+        row.appendChild(span);
+        box.appendChild(row);
+      });
+    }
+    if (answeredCount){
+      var note = document.createElement("p"); note.className = "asks-summary-note";
+      note.textContent = answeredCount + (answeredCount > 1 ? " asks" : " ask") + " already answered across the floor.";
+      box.appendChild(note);
+    }
+    return box;
+  }
+
   function buildMenu(){
     menuView.innerHTML = "";
-    floorLead.textContent = desks.length + " desks on the floor — amber runs Shadi's, Cherenkov blue runs Ben's, two-tone is shared. Pick one to open it.";
+    menuView.appendChild(buildAsksSummary());
+    floorLead.textContent = desks.length + " desks on the floor, sorted by owner below -- but the colour on each card is stage, not owner. Pick one to open it.";
     var hint = document.createElement("p"); hint.className = "picker-hint";
-    hint.textContent = "Choose a project to see everything on its desk — including what broke.";
+    hint.textContent = "Choose a project to see its full record -- the problem, how it works, proof, risk, and what we need from DT.";
     menuView.appendChild(hint);
 
     groups.forEach(function(g){
@@ -230,19 +336,22 @@ window.renderFloorplan(document.getElementById("floorplanMount"), "studio");
       menuView.appendChild(h);
       var grid = document.createElement("div"); grid.className = "menu-grid";
       g.items.forEach(function(d){
+        var stage = stageOf(d);
         var card = document.createElement("button");
-        card.className = "menu-card " + ownerKey(d) + (d.status === "retired" ? " retired" : "");
-        var actPins = pinsForDesk(d.name);
-        var html = '<div class="mc-meta"><span class="mc-status"></span></div><h3></h3><p class="mc-teaser"></p>';
-        if (actPins.length){
-          var latest = actPins[actPins.length - 1];
-          html += '<p class="mc-activity"><span class="stamp ' + latest.stamp + '">' + latest.stamp + '</span>' + actPins.length + ' pin' + (actPins.length>1?'s':'') + ' on the wall</p>';
-        }
-        html += '<span class="mc-go">Open this desk &rarr;</span>';
+        card.className = "menu-card " + stage + (d.status === "retired" ? " retired" : "");
+        var html = '<div class="mc-top"><span class="stage-pill ' + stage + '"></span><span class="owner-badge ' + ownerKey(d) + '"></span></div>' +
+          '<h3></h3><p class="mc-teaser"></p><div class="mc-track"></div>' +
+          '<div class="mc-foot"><span class="desk-updated"></span></div>';
         card.innerHTML = html;
-        card.querySelector(".mc-status").textContent = (d.tag ? d.tag + " · " : "") + (d.status || "");
+        card.querySelector(".stage-pill").textContent = STAGE_LABEL[stage];
+        card.querySelector(".owner-badge").textContent = initials(d);
         card.querySelector("h3").textContent = d.name;
-        card.querySelector(".mc-teaser").textContent = firstSentence(d.does) || firstSentence(d.origin);
+        card.querySelector(".mc-teaser").textContent = firstSentence(d.problem) || firstSentence(d.how);
+        card.querySelector(".mc-track").appendChild(buildStageTrack(d, false));
+        var foot = card.querySelector(".mc-foot");
+        var upd = foot.querySelector(".desk-updated");
+        upd.textContent = d.updated ? "Updated " + d.updated : "";
+        foot.appendChild(askSummary(d));
         card.addEventListener("click", function(){ openDesk(d.__slug, true); });
         grid.appendChild(card);
       });
@@ -250,26 +359,167 @@ window.renderFloorplan(document.getElementById("floorplanMount"), "studio");
     });
   }
 
-  /* ---- one open desk ---- */
+  /* ---- one open desk: continuous project record, nothing collapsed ---- */
   function buildDetail(d){
     var owner = ownerKey(d);
+    var stage = stageOf(d);
     var el = document.createElement("div");
     el.className = "desk " + owner + (d.status === "retired" ? " retired" : "");
-    var tagClass = owner === "amber" ? "amber" : owner === "cherenkov" ? "blue" : "";
-    var html = '<h3></h3><div class="desk-meta"><span class="tag ' + tagClass + '"></span><span class="tag"></span></div>';
-    ["origin","does","tuesday","broke","steal"].forEach(function(k){
-      if (d[k]) html += '<p class="anat ' + k + '"><b>' + LABELS[k] + '</b><span></span></p>';
-    });
-    el.innerHTML = html;
-    el.querySelector("h3").textContent = d.name;
-    var tags = el.querySelectorAll(".desk-meta .tag");
-    tags[0].textContent = d.tag || d.owner;
-    tags[1].textContent = d.status || "";
-    ["origin","does","tuesday","broke","steal"].forEach(function(k){
-      var row = el.querySelector(".anat." + k + " span");
-      if (row) row.textContent = d[k];
-    });
+
+    var head = document.createElement("div"); head.className = "desk-head";
+    head.innerHTML = '<div><h3></h3><p class="dh-sub"></p></div><span class="stage-pill ' + stage + '"></span>';
+    head.querySelector("h3").textContent = d.name;
+    head.querySelector(".dh-sub").textContent = (d.tag || d.owner) + (d.updated ? " \u00b7 updated " + d.updated : "");
+    head.querySelector(".stage-pill").textContent = STAGE_LABEL[stage];
+    el.appendChild(head);
+
+    if (STAGE_TRACK.indexOf(stage) >= 0) el.appendChild(buildStageTrack(d, true));
+
+    var dtBox = document.createElement("div"); dtBox.className = "dt-box";
+    var dtLabel = document.createElement("p"); dtLabel.className = "dt-label"; dtLabel.textContent = "FOR DT -- WHERE IT'S AT, WHAT WE NEED";
+    dtBox.appendChild(dtLabel);
+    var dtWhere = document.createElement("p"); dtWhere.className = "dt-where";
+    dtWhere.textContent = firstSentence(d.problem) || firstSentence(d.how) || "";
+    dtBox.appendChild(dtWhere);
+    var asksLabel = document.createElement("p"); asksLabel.className = "dt-asks-label"; asksLabel.textContent = "THE ASKS";
+    dtBox.appendChild(asksLabel);
+    var asks = d.asks || [];
+    if (!asks.length){
+      var empty = document.createElement("p"); empty.className = "dt-empty";
+      empty.textContent = "No asks logged yet for this desk -- add them via the project-update prompt.";
+      dtBox.appendChild(empty);
+    } else {
+      asks.forEach(function(a){
+        var row = document.createElement("div"); row.className = "ask-row";
+        row.innerHTML = '<span class="ask-chip ' + a.status + '"></span><span></span>';
+        row.querySelector(".ask-chip").textContent = a.status === "open" ? "Open" : "Answered";
+        row.querySelector("span:last-child").textContent = a.text;
+        dtBox.appendChild(row);
+      });
+    }
+    el.appendChild(dtBox);
+
+    var record = document.createElement("div"); record.className = "record";
+
+    if (d.problem){
+      var pProblem = document.createElement("p"); pProblem.className = "anat problem";
+      pProblem.innerHTML = '<b></b><span></span>';
+      pProblem.querySelector("b").textContent = RECORD_LABELS.problem;
+      pProblem.querySelector("span").textContent = d.problem;
+      record.appendChild(pProblem);
+    }
+
+    function branchProofBlock(text){
+      var split = splitProof(text);
+      var wrap = document.createElement("div"); wrap.className = "branch-proof";
+      if (split){
+        wrap.innerHTML = '<span class="bp-before"><b>Before</b> </span><span class="bp-after"><b>After</b> </span>';
+        wrap.querySelector(".bp-before").appendChild(document.createTextNode(split.before));
+        wrap.querySelector(".bp-after").appendChild(document.createTextNode(split.after));
+      } else {
+        wrap.textContent = text;
+      }
+      return wrap;
+    }
+
+    if (d.branches && d.branches.length){
+      ["how","proof","risk"].forEach(function(k){
+        var sectionLabel = document.createElement("p"); sectionLabel.className = "proof-label";
+        sectionLabel.textContent = RECORD_LABELS[k] || (k === "how" ? "How it works" : k === "proof" ? "Proof it works" : "Risk");
+        record.appendChild(sectionLabel);
+        var cols = document.createElement("div"); cols.className = "branch-columns";
+        d.branches.forEach(function(b){
+          if (!b[k]) return;
+          var col = document.createElement("div"); col.className = "branch-col " + ownerKey({owner:b.owner});
+          var head = document.createElement("b"); head.className = "branch-col-label"; head.textContent = b.label;
+          col.appendChild(head);
+          if (k === "proof"){
+            col.appendChild(branchProofBlock(b[k]));
+          } else {
+            var span = document.createElement("span"); span.textContent = b[k];
+            col.appendChild(span);
+          }
+          cols.appendChild(col);
+        });
+        record.appendChild(cols);
+      });
+    } else {
+      if (d.how){
+        var pHow = document.createElement("div"); pHow.className = "anat how";
+        var howLabel = document.createElement("b"); howLabel.textContent = RECORD_LABELS.how;
+        pHow.appendChild(howLabel);
+        if (typeof d.how === "string"){
+          var howSpan = document.createElement("span"); howSpan.textContent = d.how;
+          pHow.appendChild(howSpan);
+        } else {
+          if (d.how.summary){
+            var howSummary = document.createElement("span"); howSummary.className = "how-summary"; howSummary.textContent = d.how.summary;
+            pHow.appendChild(howSummary);
+          }
+          if (d.how.steps && d.how.steps.length){
+            var ol = document.createElement("ol"); ol.className = "how-steps";
+            d.how.steps.forEach(function(s){
+              var li = document.createElement("li"); li.textContent = s;
+              ol.appendChild(li);
+            });
+            pHow.appendChild(ol);
+          }
+        }
+        record.appendChild(pHow);
+      }
+
+      if (d.proof){
+        var proofWrap = document.createElement("div"); proofWrap.className = "proof-block";
+        var proofLabel = document.createElement("b"); proofLabel.className = "proof-label"; proofLabel.textContent = "Proof it works";
+        proofWrap.appendChild(proofLabel);
+        var split = splitProof(d.proof);
+        if (split){
+          var cols2 = document.createElement("div"); cols2.className = "proof-columns";
+          cols2.innerHTML = '<div class="proof-col before"><b>Before</b><span></span></div><div class="proof-col after"><b>After</b><span></span></div>';
+          cols2.querySelector(".before span").textContent = split.before;
+          cols2.querySelector(".after span").textContent = split.after;
+          proofWrap.appendChild(cols2);
+        } else {
+          var p2 = document.createElement("p"); p2.className = "proof-plain"; p2.textContent = d.proof;
+          proofWrap.appendChild(p2);
+        }
+        record.appendChild(proofWrap);
+      }
+
+      if (d.risk){
+        var pRisk = document.createElement("div"); pRisk.className = "anat risk";
+        var riskLabel = document.createElement("b"); riskLabel.textContent = RECORD_LABELS.risk;
+        pRisk.appendChild(riskLabel);
+        if (typeof d.risk === "string"){
+          var riskSpan = document.createElement("span"); riskSpan.textContent = d.risk;
+          pRisk.appendChild(riskSpan);
+        } else {
+          var riskList = document.createElement("div"); riskList.className = "risk-list";
+          d.risk.forEach(function(r){
+            var row = document.createElement("div"); row.className = "risk-item";
+            var lab = document.createElement("b"); lab.textContent = r.label;
+            var txt = document.createElement("span"); txt.textContent = r.text;
+            row.appendChild(lab); row.appendChild(txt);
+            riskList.appendChild(row);
+          });
+          pRisk.appendChild(riskList);
+        }
+        record.appendChild(pRisk);
+      }
+    }
+
+    if (d.lesson){
+      var pLesson = document.createElement("p"); pLesson.className = "anat lesson";
+      pLesson.innerHTML = '<b></b><span></span>';
+      pLesson.querySelector("b").textContent = RECORD_LABELS.lesson;
+      pLesson.querySelector("span").textContent = d.lesson;
+      record.appendChild(pLesson);
+    }
+    el.appendChild(record);
+
     if (d.script && d.script.length) el.appendChild(buildExchange(d.script));
+    else el.appendChild(buildExchangeEmpty());
+
     var act = buildActivity(d.name);
     if (act) el.appendChild(act);
     return el;
