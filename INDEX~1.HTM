@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<!-- The Hearth — front of house of DIALOG Intelligence. The plan introduces the building;
+     the fire holds this week's conversation and can page back through older weeks; the bar
+     holds the real per-topic side-talk pulled live from the desks; the gallery shows the
+     latest pin. A short intro up top orients anyone arriving for the first time.
+     The Boardroom (presentation mode) was retired 2026-07-24 — DT reviews the real Studio
+     Floor now, not a separate pitch page; a second hand-authored surface just meant two
+     things to keep honest instead of one. -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DIALOG Intelligence — The Hearth</title>
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .hero{padding:36px 0 8px;}
+  .hero h1{font-size:1.9rem;max-width:32ch;margin:0 auto;color:#2b2a27;}
+  .plan-title{font-family:var(--serif);font-weight:500;font-size:1.3rem;color:#171717;margin:30px 0 -10px;}
+
+  /* the intro — orient a first-time visitor before the fire starts talking */
+  .intro{max-width:720px;margin:30px auto 0;padding:22px 26px;border:1px solid var(--line);border-radius:14px;background:var(--card);}
+  .intro .eyebrow{margin-bottom:12px;}
+  .intro .eyebrow::after{margin:12px 0 0;}
+  .intro h2{font-size:1.15rem;margin:0 0 10px;}
+  .intro p{font-size:.92rem;line-height:1.68;color:#5d5a52;margin:0 0 10px;}
+  .intro p:last-of-type{margin-bottom:0;}
+  .intro .who-note{font-size:.78rem;color:#a09a8e;margin:16px 0 8px;font-weight:600;}
+  .intro-voices{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px;}
+  @media(max-width:560px){.intro-voices{grid-template-columns:1fr;}}
+  .intro-voice{border-left:3px solid var(--line);padding:2px 0 2px 12px;font-size:.84rem;line-height:1.55;color:#5d5a52;}
+  .intro-voice.amber{border-left-color:var(--amber);}
+  .intro-voice.ben{border-left-color:var(--cheren);}
+  .intro-voice b{display:block;color:#2b2a27;font-size:.82rem;margin-bottom:2px;}
+
+  .intro-journey-label{font-size:.78rem;font-weight:700;color:#b45309;margin:18px 0 10px;}
+  .intro-journey{margin:0;padding:0;list-style:none;counter-reset:journey;}
+  .intro-journey-item{display:flex;gap:12px;align-items:baseline;padding:9px 0;border-top:1px dashed var(--line);}
+  .intro-journey-item:first-child{border-top:none;}
+  .intro-journey-n{flex:0 0 auto;font-family:var(--serif);font-weight:700;font-size:.86rem;color:#b45309;width:16px;}
+  .intro-journey-body{flex:1;min-width:0;}
+  .intro-journey-body a{font-weight:700;font-size:.9rem;}
+  .intro-journey-why{display:block;font-size:.82rem;color:#8a8579;line-height:1.55;margin-top:2px;}
+
+  /* since your last visit */
+  .since{max-width:640px;margin:18px auto 0;text-align:center;font-size:.85rem;color:#8a8579;}
+  .since b{color:#b45309;font-weight:700;}
+
+  /* now-showing panel */
+  .now-label{font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#a09a8e;text-align:center;margin:38px 0 14px;}
+  .now{max-width:920px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  @media(max-width:760px){.now{grid-template-columns:repeat(2,1fr);}}
+  .now a{border-bottom:none;}
+  .now .tile{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;height:100%;transition:border-color .15s, box-shadow .15s;}
+  .now a:hover .tile{border-color:var(--amber-line);box-shadow:0 6px 18px rgba(245,158,11,.10);}
+  .now .k{display:block;font-size:.68rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#b3aea2;margin-bottom:4px;}
+  .now .v{display:block;font-weight:700;color:#2b2a27;font-size:.94rem;line-height:1.4;}
+  .now .s{display:block;font-size:.78rem;color:#8a8579;margin-top:2px;}
+
+  /* the staged room */
+  .room{max-width:920px;margin:34px auto 0;padding:0 24px;display:grid;grid-template-columns:1.6fr 1fr;gap:22px;align-items:start;}
+  @media(max-width:820px){.room{grid-template-columns:1fr;}}
+  .spot-label{font-size:.68rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#b45309;margin:0 0 10px;}
+  .edge .spot-label{color:#a09a8e;}
+  .spot{border-radius:14px;border:1px solid var(--line);background:var(--card);padding:20px 22px 10px;}
+  .spot.quiet{padding:18px 20px;font-size:.9rem;color:#8a8579;font-style:italic;line-height:1.65;border-style:dashed;background:transparent;font-family:var(--serif);}
+  .edge > div + div{margin-top:22px;}
+
+  /* the fire: glows by freshness — dim embers mean we haven't fed it */
+  .fire-wrap{position:relative;}
+  .fire-wrap::before{content:"";position:absolute;inset:-16px;border-radius:26px;z-index:0;
+    background:radial-gradient(65% 75% at 50% 20%, rgba(245,158,11,.5), transparent 70%);
+    filter:blur(26px);opacity:calc(var(--glow,1)*.45);animation:breathe 7s ease-in-out infinite;}
+  @keyframes breathe{50%{opacity:calc(var(--glow,1)*.8);}}
+  .spot.fire{position:relative;z-index:1;border-color:var(--amber-line);background:#ffffff;}
+  .spot-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:14px;padding-bottom:10px;border-bottom:1px dashed var(--line);}
+  .spot-head .t-topic{font-family:var(--serif);font-weight:600;font-size:1.1rem;color:#2b2a27;}
+  .spot-head .t-date{font-size:.76rem;color:#b3aea2;margin-left:auto;}
+  .t-tag{font-size:.62rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:4px;}
+  .t-tag.weekly{background:var(--amber-wash);color:#b45309;}
+  .t-tag.intro{background:linear-gradient(90deg,var(--amber-wash),var(--cheren-wash));color:#5d5a52;}
+  .fire-handoff{margin:6px 0 12px;opacity:0;transition:opacity .8s;}
+  .fire-handoff.on{opacity:1;}
+  .fire-handoff a{font-weight:700;font-size:.92rem;}
+
+  /* week switcher — page back through older weeks */
+  .fire-nav{display:flex;align-items:center;gap:10px;margin:12px 0 0;font-size:.78rem;color:#8a8579;}
+  .fire-nav button{font:inherit;font-size:.76rem;font-weight:700;color:#5d5a52;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:5px 11px;cursor:pointer;transition:border-color .15s,color .15s;}
+  .fire-nav button:hover:not(:disabled){border-color:var(--amber-line);color:#b45309;}
+  .fire-nav button:disabled{opacity:.4;cursor:default;}
+  .fire-nav .fire-index{margin:0 auto;font-size:.74rem;color:#a09a8e;letter-spacing:.04em;}
+
+  .gallery-link{display:inline-block;margin-top:12px;font-size:.85rem;font-weight:700;}
+
+  /* the bar — real per-topic side conversations, pulled from the desks */
+  .bar-note{font-size:.8rem;color:#a09a8e;font-style:italic;line-height:1.55;margin:0 0 12px;font-family:var(--serif);}
+  .bar-topics{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 14px;}
+  .bar-chip{font:inherit;font-size:.76rem;font-weight:600;color:#5d5a52;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 12px;cursor:pointer;transition:border-color .15s,color .15s,background .15s;border-left-width:3px;}
+  .bar-chip.amber{border-left-color:var(--amber);}
+  .bar-chip.cherenkov{border-left-color:var(--cheren);}
+  .bar-chip.shared{border-left-color:#b9863a;}
+  .bar-chip:hover{color:#2b2a27;}
+  .bar-chip.on{background:var(--wash);color:#2b2a27;border-color:#dcdad5;}
+  .bar-thread{border-top:1px dashed var(--line);padding-top:14px;}
+  .bar-thread .bt-head{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+  .bar-thread .bt-name{font-family:var(--serif);font-weight:600;font-size:1rem;color:#2b2a27;}
+  .bar-thread .bt-owner{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a09a8e;}
+  .bar-thread .bt-link{margin:6px 0 0;font-size:.82rem;font-weight:700;}
+  .bar-thread .say{opacity:1;transform:none;}
+
+  /* voices, equal weight */
+  .voices{max-width:820px;margin:46px auto 0;padding:0 24px;display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media(max-width:640px){.voices{grid-template-columns:1fr;}}
+  .voice{border-radius:14px;padding:20px 22px;background:var(--card);border:1px solid var(--line);border-top-width:3px;}
+  .voice.occupied{border-top-color:var(--amber);}
+  .voice.occupied-ben{border-top-color:var(--cheren);}
+  .voice .vtag{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:4px;margin-bottom:10px;}
+  .voice.occupied .vtag{background:var(--amber-wash);color:#b45309;}
+  .voice.occupied-ben .vtag{background:var(--cheren-wash);color:#0b7cb5;}
+  .voice h3{margin:0 0 6px;}
+  .voice p{font-size:.9rem;line-height:1.65;margin:0;color:#5d5a52;}
+
+  /* house rules: amber · indigo · cherenkov */
+  .rules{max-width:920px;margin:42px auto 0;padding:0 24px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  @media(max-width:760px){.rules{grid-template-columns:1fr;}}
+  .rule{border-top:2px solid var(--amber);padding-top:12px;}
+  .rule:nth-child(2){border-top-color:#b9b3e8;}
+  .rule:nth-child(3){border-top-color:var(--cheren);}
+  .rule h4{margin:0 0 6px;font-size:.92rem;}
+  .rule p{font-size:.86rem;color:#5d5a52;line-height:1.65;margin:0;}
+
+  @media (prefers-reduced-motion: reduce){.fire-wrap::before{animation:none;}.fire-handoff{transition:none;opacity:1;}}
+</style>
+</head>
+<body>
+
+<div class="hairline"></div>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><span class="mark">DI</span> DIALOG Intelligence</a>
+    <div class="nav-links">
+      <a href="studio.html">Studio Floor</a>
+      <a href="pinup.html">Pin-up Wall</a>
+      <a href="modelshop.html">Playbook</a>
+      <a href="library.html">Library</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container" style="text-align:center;">
+    <span class="eyebrow" id="heroEyebrow"></span>
+    <h1 id="heroH1"></h1>
+    <h2 class="plan-title" id="planTitle">The Studio</h2>
+    <p class="lead" id="heroLead" style="display:none;max-width:56ch;margin:10px auto 0;"></p>
+    <div id="floorplanMount"></div>
+    <div class="since" id="sinceLine" style="display:none;"></div>
+  </div>
+</header>
+
+<div class="container" id="introMount"></div>
+
+<div class="now-label" id="nowLabel">Now showing</div>
+<div class="now" id="nowPanel"></div>
+<div id="hearthMain">
+  <div class="room">
+    <div>
+      <p class="spot-label" id="fireLabel"></p>
+      <div class="fire-wrap" id="fireWrap">
+        <div class="spot fire">
+          <div class="spot-head" id="fireHead"></div>
+          <div id="fireBody"></div>
+          <p class="fire-handoff" id="fireHandoff"></p>
+          <div class="fire-nav" id="fireNav"></div>
+        </div>
+      </div>
+    </div>
+    <div class="edge">
+      <div>
+        <p class="spot-label" id="barLabel"></p>
+        <div class="spot" id="barBody"></div>
+      </div>
+      <div>
+        <p class="spot-label" id="galleryLabel"></p>
+        <div id="galleryMount"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="voices" id="voicesMount"></div>
+
+  <div class="rules" id="rulesMount"></div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span id="footerLine"></span>
+    <span>Drafted by Shadi &amp; Ben, narrated by Claude. &middot; <span id="verLine"></span></span>
+  </div>
+</footer>
+
+<script src="assets/floorplan.js"></script>
+<script src="assets/rooms-payload.js"></script>
+<script src="assets/hearth-payload.js"></script>
+<script>
+(function(){
+var C = window.HEARTH_PAYLOAD, R = window.ROOMS_PAYLOAD || {};
+var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var weeks = C.weeks && C.weeks.length ? C.weeks : [C.spots.fire];
+
+function slugify(s){ return String(s).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,""); }
+
+function typeInto(el, txt, cb){
+  if (reduced){ el.textContent = txt; if (cb) cb(); return; }
+  var caret = document.createElement('span'); caret.className = 'caret'; el.appendChild(caret);
+  var i = 0;
+  (function tick(){
+    if (el.__finish){ el.textContent = txt; if (cb) cb(); return; }
+    if (i < txt.length){
+      el.insertBefore(document.createTextNode(txt.charAt(i)), caret); i++;
+      setTimeout(tick, txt.charAt(i-1) === '.' ? 65 : 14);
+    } else { caret.remove(); if (cb) setTimeout(cb, 420); }
+  })();
+}
+
+document.getElementById("footerLine").textContent = C.footer;
+document.getElementById("verLine").textContent = "v" + C.version;
+if (window.renderFloorplan) window.renderFloorplan(document.getElementById("floorplanMount"), "hearth");
+
+/* ---- data pulled from the building ---- */
+var pins = (R.pinup && R.pinup.pins) || [];
+var fails = pins.filter(function(p){ return p.stamp === "FAIL"; }).length;
+var desks = (R.studio && R.studio.desks && R.studio.desks.length) || 0;
+var roadmapSteps = (function(){
+  var rm = R.modelshop && R.modelshop.roadmap;
+  if (!rm) return (R.modelshop && (R.modelshop.models || R.modelshop.shelves) || []).length;
+  return (rm.pockets || []).length + (rm.opportunity ? 1 : 0) + (rm.forwardRoads || []).length + (rm.offPath || []).length;
+})();
+
+/* ---- the intro — orient a first-time visitor ---- */
+(function(){
+  var intro = C.intro; if (!intro) return;
+  var box = document.createElement("div"); box.className = "intro";
+  var html = '<span class="eyebrow"></span><h2></h2>';
+  (intro.body || []).forEach(function(){ html += '<p></p>'; });
+  box.innerHTML = html;
+  box.querySelector(".eyebrow").textContent = intro.eyebrow || "";
+  box.querySelector("h2").textContent = intro.title || "";
+  var ps = box.querySelectorAll("p");
+  (intro.body || []).forEach(function(t, i){ ps[i].textContent = t; });
+
+  if (intro.journey && intro.journey.length){
+    var jLabel = document.createElement("p"); jLabel.className = "intro-journey-label";
+    jLabel.textContent = intro.journeyLabel || "Read the rooms in this order:";
+    box.appendChild(jLabel);
+    var jList = document.createElement("ol"); jList.className = "intro-journey";
+    intro.journey.forEach(function(step){
+      var li = document.createElement("li"); li.className = "intro-journey-item";
+      var n = document.createElement("span"); n.className = "intro-journey-n"; n.textContent = step.n + ".";
+      var body = document.createElement("span"); body.className = "intro-journey-body";
+      var a = document.createElement("a"); a.href = step.href; a.textContent = step.room;
+      var why = document.createElement("span"); why.className = "intro-journey-why"; why.textContent = step.why;
+      body.appendChild(a); body.appendChild(why);
+      li.appendChild(n); li.appendChild(body);
+      jList.appendChild(li);
+    });
+    box.appendChild(jList);
+  }
+
+  if (C.voices && C.voices.length){
+    var note = document.createElement("p"); note.className = "who-note";
+    note.textContent = intro.voicesNote || "Two voices narrate the building:";
+    box.appendChild(note);
+    var vwrap = document.createElement("div"); vwrap.className = "intro-voices";
+    C.voices.forEach(function(v){
+      var cls = v.state === "occupied-ben" ? "ben" : "amber";
+      var d = document.createElement("div"); d.className = "intro-voice " + cls;
+      d.innerHTML = '<b></b><span></span>';
+      d.querySelector("b").textContent = v.name + " — " + v.tag;
+      d.querySelector("span").textContent = v.desc;
+      vwrap.appendChild(d);
+    });
+    box.appendChild(vwrap);
+  }
+  document.getElementById("introMount").appendChild(box);
+})();
+
+/* ---- since your last visit (remembered locally, diffed honestly) ---- */
+var KEY = "di-visit";
+var prev = null; try { prev = JSON.parse(localStorage.getItem(KEY) || "null"); } catch(e){}
+try { localStorage.setItem(KEY, JSON.stringify({ date: weeks[0].date, pins: pins.length })); } catch(e){}
+if (prev){
+  var bits = [];
+  if (prev.date !== weeks[0].date) bits.push("a new headline by the fire");
+  if (pins.length > (prev.pins || 0)) bits.push((pins.length - prev.pins) + " new pin" + (pins.length - prev.pins > 1 ? "s" : "") + " on the wall");
+  var s = document.getElementById("sinceLine");
+  s.style.display = "";
+  s.innerHTML = bits.length
+    ? "Since your last visit: <b>" + bits.join("</b> · <b>") + "</b>"
+    : "Nothing new since your last visit — an honest quiet.";
+}
+
+document.getElementById("heroEyebrow").textContent = C.hero.eyebrow;
+document.getElementById("heroH1").textContent = C.hero.line;
+
+/* ---- the fire glows by freshness (based on the newest week) ---- */
+(function(){
+  var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(weeks[0].date || "");
+  var glow = 0.25;
+  if (m){
+    var age = (Date.now() - new Date(+m[1], +m[2]-1, +m[3]).getTime()) / 86400000;
+    glow = Math.max(0.2, Math.min(1, 1 - age / 21));
+  }
+  document.getElementById("fireWrap").style.setProperty("--glow", glow.toFixed(2));
+})();
+
+/* ---- now-showing panel ---- */
+var tiles = [
+  { k: "This week", v: weeks[0].topic, s: weeks[0].date, href: "#fireLabel" },
+  { k: "Studio floor", v: desks + " desks", s: "tools in real use", href: "studio.html" },
+  { k: "Pin-up wall", v: pins.length + " pins · " + fails + " fails", s: "last pinned " + ((R.pinup && R.pinup.lastPinned) || "—"), href: "pinup.html" },
+  { k: "Playbook", v: roadmapSteps + "-step roadmap", s: "where it's heading", href: "modelshop.html" }
+];
+var now = document.getElementById("nowPanel");
+tiles.forEach(function(t){
+  var a = document.createElement("a"); a.href = t.href;
+  a.innerHTML = '<div class="tile"><span class="k"></span><span class="v"></span><span class="s"></span></div>';
+  a.querySelector(".k").textContent = t.k;
+  a.querySelector(".v").textContent = t.v;
+  a.querySelector(".s").textContent = t.s;
+  now.appendChild(a);
+});
+
+/* ---- the fire: a week at a time, with a switcher to page back ---- */
+function whoLabel(w){ return w === "amber" ? "AMBER" : "FEYNMAN"; }
+function line(body, l){
+  var wrap = document.createElement("div");
+  wrap.className = "say " + (l.who === "amber" ? "amber" : "ben");
+  wrap.innerHTML = '<span class="who"></span><div class="bubble"></div>';
+  wrap.querySelector(".who").textContent = whoLabel(l.who);
+  body.appendChild(wrap);
+  return { wrap: wrap, bubble: wrap.querySelector(".bubble"), t: l.t };
+}
+
+var fireLabelEl = document.getElementById("fireLabel");
+var fireHeadEl = document.getElementById("fireHead");
+var fireBodyEl = document.getElementById("fireBody");
+var fireHandoffEl = document.getElementById("fireHandoff");
+var fireNavEl = document.getElementById("fireNav");
+var curWeek = 0;
+
+function renderWeek(idx, animate){
+  var fire = weeks[idx];
+  fireLabelEl.textContent = idx === 0 ? (fire.label || "By the fire — this week") : "By the fire — an earlier week";
+  fireHeadEl.innerHTML = '<span class="t-tag ' + (fire.tag || "weekly") + '"></span><span class="t-topic"></span><span class="t-date"></span>';
+  fireHeadEl.querySelector(".t-tag").textContent = fire.tag || "weekly";
+  fireHeadEl.querySelector(".t-topic").textContent = fire.topic;
+  fireHeadEl.querySelector(".t-date").textContent = fire.date;
+  fireBodyEl.innerHTML = "";
+  fireHandoffEl.className = "fire-handoff"; fireHandoffEl.innerHTML = "";
+
+  var items = (fire.lines || []).map(function(l){ return line(fireBodyEl, l); });
+  function showHandoff(){
+    if (fire.handoff){
+      fireHandoffEl.innerHTML = '<a href="' + fire.handoff.href + '">' + fire.handoff.t + '</a>';
+      requestAnimationFrame(function(){ fireHandoffEl.classList.add("on"); });
+    }
+  }
+  if (animate && !reduced){
+    var fi = 0;
+    (function typeNext(){
+      if (fi >= items.length){ showHandoff(); return; }
+      var it = items[fi++];
+      requestAnimationFrame(function(){ it.wrap.classList.add("on"); });
+      it.bubble.addEventListener("click", function(){ it.bubble.__finish = true; });
+      typeInto(it.bubble, it.t, typeNext);
+    })();
+  } else {
+    items.forEach(function(it){ it.wrap.classList.add("on"); it.bubble.textContent = it.t; });
+    showHandoff();
+  }
+  renderFireNav();
+}
+
+function renderFireNav(){
+  if (weeks.length <= 1){
+    fireNavEl.innerHTML = '<span class="fire-index">The record starts here — new weeks land every Friday.</span>';
+    return;
+  }
+  fireNavEl.innerHTML =
+    '<button id="olderBtn">&larr; Older week</button>' +
+    '<span class="fire-index">Week ' + (weeks.length - curWeek) + ' of ' + weeks.length + ' · ' + weeks[curWeek].date + '</span>' +
+    '<button id="newerBtn">Newer week &rarr;</button>';
+  var older = document.getElementById("olderBtn"), newer = document.getElementById("newerBtn");
+  older.disabled = curWeek >= weeks.length - 1;
+  newer.disabled = curWeek <= 0;
+  older.addEventListener("click", function(){ if (curWeek < weeks.length - 1){ curWeek++; renderWeek(curWeek, false); } });
+  newer.addEventListener("click", function(){ if (curWeek > 0){ curWeek--; renderWeek(curWeek, false); } });
+}
+
+renderWeek(0, true);
+
+/* ---- the bar: real side conversations, one per topic, pulled from the desks ---- */
+(function(){
+  document.getElementById("barLabel").textContent = (C.spots.bar && C.spots.bar.label) || "At the bar";
+  var barBody = document.getElementById("barBody");
+  var studioDesks = (R.studio && R.studio.desks) || [];
+  var topics = studioDesks.filter(function(d){ return d.script && d.script.length; }).map(function(d){
+    return { name: d.name, owner: d.owner || "amber", slug: slugify(d.name), script: d.script };
+  });
+
+  if (!topics.length){
+    barBody.className = "spot quiet";
+    barBody.textContent = (C.spots.bar && C.spots.bar.quiet) || "Quiet this week.";
+    return;
+  }
+
+  if (C.spots.bar && C.spots.bar.note){
+    var note = document.createElement("p"); note.className = "bar-note";
+    note.textContent = C.spots.bar.note; barBody.appendChild(note);
+  }
+  var chipRow = document.createElement("div"); chipRow.className = "bar-topics";
+  var thread = document.createElement("div"); thread.className = "bar-thread";
+  barBody.appendChild(chipRow); barBody.appendChild(thread);
+
+  function ownerClass(o){ return o === "cherenkov" ? "cherenkov" : o === "shared" ? "shared" : "amber"; }
+
+  function renderThread(t){
+    thread.innerHTML = "";
+    var head = document.createElement("div"); head.className = "bt-head";
+    head.innerHTML = '<span class="bt-name"></span><span class="bt-owner"></span>';
+    head.querySelector(".bt-name").textContent = t.name;
+    head.querySelector(".bt-owner").textContent =
+      t.owner === "shared" ? "Shadi + Ben" : t.owner === "cherenkov" ? "Ben's desk" : "Shadi's desk";
+    thread.appendChild(head);
+    t.script.forEach(function(l){
+      var row = document.createElement("div");
+      row.className = "say on " + (l.who === "amber" ? "amber" : "ben");
+      row.innerHTML = '<span class="who"></span><div class="bubble"></div>';
+      row.querySelector(".who").textContent = whoLabel(l.who);
+      row.querySelector(".bubble").textContent = l.t;
+      thread.appendChild(row);
+    });
+    var link = document.createElement("p"); link.className = "bt-link";
+    link.innerHTML = '<a href="studio.html#' + t.slug + '">Open the ' + t.name.replace(/^The\s+/i,"") + ' desk &rarr;</a>';
+    thread.appendChild(link);
+  }
+
+  topics.forEach(function(t, i){
+    var b = document.createElement("button");
+    b.className = "bar-chip " + ownerClass(t.owner) + (i === 0 ? " on" : "");
+    b.textContent = t.name;
+    b.addEventListener("click", function(){
+      chipRow.querySelectorAll(".bar-chip").forEach(function(c){ c.classList.remove("on"); });
+      b.classList.add("on"); renderThread(t);
+    });
+    chipRow.appendChild(b);
+  });
+  renderThread(topics[0]);
+})();
+
+/* ---- the gallery: latest pin ---- */
+document.getElementById("galleryLabel").textContent = C.spots.gallery.label;
+var g = document.getElementById("galleryMount");
+if (pins.length){
+  var p = pins[pins.length - 1];
+  var d = document.createElement("div"); d.className = "pin-card";
+  d.innerHTML = '<div class="pin-head"><span class="stamp"></span><span class="pin-date"></span></div><p class="pin-row verdict"></p><a class="gallery-link"></a>';
+  d.querySelector(".stamp").textContent = p.stamp;
+  d.querySelector(".stamp").className = "stamp " + p.stamp;
+  d.querySelector(".pin-date").textContent = p.date;
+  d.querySelector(".verdict").textContent = p.verdict;
+  var gl = d.querySelector(".gallery-link");
+  gl.href = C.spots.gallery.handoff.href; gl.textContent = C.spots.gallery.handoff.t;
+  g.appendChild(d);
+}
+
+/* ---- voices & rules ---- */
+var vm = document.getElementById("voicesMount");
+C.voices.forEach(function(v){
+  var d = document.createElement("div"); d.className = "voice " + v.state;
+  d.innerHTML = '<span class="vtag"></span><h3></h3><p></p>';
+  d.querySelector(".vtag").textContent = v.tag;
+  d.querySelector("h3").textContent = v.name;
+  d.querySelector("p").textContent = v.desc;
+  vm.appendChild(d);
+});
+var rm = document.getElementById("rulesMount");
+C.rules.forEach(function(r){
+  var d = document.createElement("div"); d.className = "rule";
+  d.innerHTML = '<h4></h4><p></p>';
+  d.querySelector("h4").textContent = r.h;
+  d.querySelector("p").textContent = r.t;
+  rm.appendChild(d);
+});
+})();
+</script>
+
+</body>
+</html>
