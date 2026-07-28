@@ -141,7 +141,7 @@
     <div class="nav-links">
       <a href="studio.html">Studio Floor</a>
       <a href="pinup.html">Pin-up Wall</a>
-      <a href="modelshop.html">Playbook</a>
+      <a href="modelshop.html">The Charrette</a>
       <a href="library.html">Library</a>
     </div>
   </div>
@@ -231,11 +231,7 @@ if (window.renderFloorplan) window.renderFloorplan(document.getElementById("floo
 var pins = (R.pinup && R.pinup.pins) || [];
 var fails = pins.filter(function(p){ return p.stamp === "FAIL"; }).length;
 var desks = (R.studio && R.studio.desks && R.studio.desks.length) || 0;
-var roadmapSteps = (function(){
-  var rm = R.modelshop && R.modelshop.roadmap;
-  if (!rm) return (R.modelshop && (R.modelshop.models || R.modelshop.shelves) || []).length;
-  return (rm.pockets || []).length + (rm.opportunity ? 1 : 0) + (rm.forwardRoads || []).length + (rm.offPath || []).length;
-})();
+var models = (R.modelshop && (R.modelshop.models || R.modelshop.shelves) || []).length;
 
 /* ---- the intro — orient a first-time visitor ---- */
 (function(){
@@ -319,7 +315,7 @@ var tiles = [
   { k: "This week", v: weeks[0].topic, s: weeks[0].date, href: "#fireLabel" },
   { k: "Studio floor", v: desks + " desks", s: "tools in real use", href: "studio.html" },
   { k: "Pin-up wall", v: pins.length + " pins · " + fails + " fails", s: "last pinned " + ((R.pinup && R.pinup.lastPinned) || "—"), href: "pinup.html" },
-  { k: "Playbook", v: roadmapSteps + "-step roadmap", s: "where it's heading", href: "modelshop.html" }
+  { k: "The Charrette", v: models + " ideas", s: "where it's heading", href: "modelshop.html" }
 ];
 var now = document.getElementById("nowPanel");
 tiles.forEach(function(t){
