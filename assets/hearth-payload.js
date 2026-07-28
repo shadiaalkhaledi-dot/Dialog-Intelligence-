@@ -5,7 +5,7 @@
    per-desk conversations in rooms-payload.js, so the bar can never drift from the
    floor. Feynman's lines adapted near-verbatim from Ben's drafted intro material. */
 window.HEARTH_PAYLOAD = {
- "version": "2026-07-08.11",
+ "version": "2026-07-28.1",
  "hero": {
   "eyebrow": "DIALOG INTELLIGENCE",
   "line": "A working record of what two of us are building with AI at DIALOG."
@@ -22,9 +22,9 @@ window.HEARTH_PAYLOAD = {
   "journey": [
    {
     "n": 1,
-    "room": "The Charrette",
-    "href": "modelshop.html#map",
-    "why": "Start here. The Map tab shows the actual playbook we're learning from, an honest read of where DIALOG stands against it, and the roadmap that follows — the context everything else on this site sits inside."
+    "room": "Strategic Hub",
+    "href": "modelshop.html",
+    "why": "Start here. One door into three rooms — Precedents (what other firms have actually done), Roadmap (an honest read of where DIALOG stands, and what follows), Ideas (sparks that haven't become anything yet). Open Roadmap first for the context everything else on this site sits inside."
    },
    {
     "n": 2,
@@ -34,9 +34,9 @@ window.HEARTH_PAYLOAD = {
    },
    {
     "n": 3,
-    "room": "Pin-up Wall",
+    "room": "Charrette",
     "href": "pinup.html",
-    "why": "The rules we've actually earned from real wins and real fails — how we build, how we judge."
+    "why": "The house rules we've actually earned from real wins and real fails — how we build, how we judge."
    },
    {
     "n": 4,
@@ -53,6 +53,35 @@ window.HEARTH_PAYLOAD = {
   ]
  },
  "weeks": [
+  {
+   "id": "2026-07-28",
+   "label": "By the fire — this week",
+   "date": "2026-07-28",
+   "tag": "weekly",
+   "topic": "The Playbook became three rooms",
+   "lines": [
+    {
+     "who": "amber",
+     "t": "Housekeeping, out loud: the Pin-up Wall is now the Charrette. Same room, same ritual -- we're just calling the exercise what it actually is, and leading with it as house rules instead of a diary of old pins."
+    },
+    {
+     "who": "ben",
+     "t": "And the Playbook's gone -- split into three. Precedents holds the outside research, BIG so far. Roadmap is our own state, informed by that but ours. Ideas is the actual pin-up wall now: raw sparks that haven't become anything yet."
+    },
+    {
+     "who": "amber",
+     "t": "One door in from the floor plan -- the Strategic Hub -- three doors out. Same content as the old six-tab page, just given room to actually grow instead of getting buried under a tab."
+    },
+    {
+     "who": "ben",
+     "t": "Nothing invented here. Every number on Precedents and Roadmap moved verbatim from the old Playbook. The only new thing is a slot on Ideas for something that hasn't resolved yet -- empty for now, on purpose."
+    }
+   ],
+   "handoff": {
+    "t": "Walk the Strategic Hub →",
+    "href": "modelshop.html"
+   }
+  },
   {
    "id": "2026-07-08",
    "label": "By the fire — this week",
