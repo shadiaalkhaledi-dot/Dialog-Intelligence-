@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<!-- Precedents -- new room, split out of the old Playbook 2026-07-28, then rebuilt the
+     same day as a real card picker after Shadi's own feedback: don't just dump BIG's full
+     profile on the page, show a card first (what they did, what's useful) and let the
+     full stage-by-stage profile open on click -- same pattern as the Studio Floor's desks.
+     One profile so far: BIG. Built to hold more than one -- each new company gets its own
+     card in the same menu grid. Teal, its own accent -- not borrowed from the Charrette's
+     cherenkov blue. Narrated by Feynman. -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DIALOG Intelligence — Precedents</title>
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .nar-caret{background:#14b8a6 !important;}
+  .nar-pop{border-left-color:#14b8a6 !important;background:#e6f7f5 !important;}
+  .shop{max-width:820px;margin:26px auto 0;padding:0 28px;}
+  .shop-meta{text-align:center;font-size:.84rem;color:var(--ink-faint);margin:0 0 18px;}
+
+  .section-block{margin:0 0 48px;}
+  .section-eyebrow{font-size:.66rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#0f766e;text-align:center;margin:0 0 8px;}
+  .section-h2{font-family:var(--serif);font-weight:600;font-size:1.4rem;text-align:center;margin:0 0 10px;color:#171717;}
+  .section-lead{font-size:.92rem;line-height:1.68;color:var(--ink-soft);text-align:center;max-width:60ch;margin:0 auto 26px;}
+
+  .source-card{border:1px solid #99e6da;background:#e6f7f5;border-radius:var(--radius);padding:14px 18px;margin:0 0 24px;font-size:.86rem;line-height:1.6;color:#0f4a44;}
+  .source-card b{color:#0f766e;}
+
+  .stage-card{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);padding:22px 24px;margin-bottom:16px;}
+  .stage-card .sc-top{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-card .sc-n{font-family:var(--serif);font-size:.78rem;font-weight:700;color:#0f766e;}
+  .stage-card h3{margin:0;font-size:1.1rem;}
+  .stage-card .sc-dates{font-size:.76rem;color:var(--ink-faint);margin-left:auto;}
+  .stage-row{margin:0 0 12px;font-size:.9rem;line-height:1.65;color:var(--ink-soft);}
+  .stage-row b{display:block;font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:2px;}
+  .stage-quote{font-family:var(--serif);font-style:italic;font-size:.94rem;line-height:1.6;color:#2b2a27;margin:0 0 14px;padding-left:14px;border-left:2px solid #99e6da;}
+  .concept-list{margin:12px 0 0;padding:0;}
+  .concept-item{list-style:none;margin:0 0 10px;padding:10px 12px;background:var(--wash);border-radius:8px;}
+  .concept-item b{display:block;font-size:.82rem;color:#171717;margin-bottom:3px;}
+  .concept-item span{font-size:.84rem;line-height:1.6;color:var(--ink-soft);}
+
+  .numbers-grid, .deepdive-list{margin:0 0 8px;}
+  .numbers-grid ul, .gov-list ul, .openq-list ul{margin:0;padding-left:18px;}
+  .numbers-grid li, .gov-list li, .openq-list li{font-size:.88rem;line-height:1.65;color:var(--ink-soft);margin-bottom:9px;}
+  .deepdive{border:1px dashed var(--line);border-radius:var(--radius-sm);padding:16px 18px;margin-bottom:12px;}
+  .deepdive h4{margin:0 0 6px;font-size:.94rem;}
+  .deepdive p{margin:0;font-size:.88rem;line-height:1.65;color:var(--ink-soft);}
+  .subhead{font-size:.68rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);margin:22px 0 10px;}
+  .subhead:first-child{margin-top:0;}
+  .sources-line{font-size:.78rem;color:var(--ink-faint);margin-top:16px;}
+  .sources-line a{border-bottom-color:#14b8a6;}
+
+  .grow-note{border:1px dashed var(--line);border-radius:var(--radius-sm);padding:14px 18px;margin:0 0 30px;font-size:.86rem;line-height:1.6;color:var(--ink-faint);text-align:center;font-style:italic;font-family:var(--serif);}
+
+  /* ---- the menu: pick a company, same idea as the Studio Floor's desks ---- */
+  .menu-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  @media(max-width:640px){.menu-grid{grid-template-columns:1fr;}}
+  .co-card{display:block;text-align:left;width:100%;font:inherit;cursor:pointer;
+    background:var(--card);border:1px solid var(--line);border-top-width:3px;border-top-color:#0f766e;border-radius:var(--radius);
+    padding:16px 18px;transition:border-color .15s,box-shadow .2s,transform .2s;}
+  .co-card:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:#dcdad5;}
+  .co-card h3{font-size:1.02rem;margin:0 0 6px;}
+  .co-card .cc-teaser{font-size:.84rem;line-height:1.55;color:var(--ink-soft);margin:0 0 10px;}
+  .co-card .cc-useful{font-size:.78rem;line-height:1.5;color:#0f766e;background:#e6f7f5;border-radius:8px;padding:8px 10px;margin:0 0 10px;}
+  .co-card .cc-foot{font-size:.72rem;color:var(--ink-faint);padding-top:8px;border-top:1px dashed var(--line);}
+
+  .back-row{margin:0 0 18px;}
+  .back-btn{font:inherit;font-size:.82rem;font-weight:700;color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;border-bottom:1px solid #14b8a6;}
+  .back-btn:hover{color:#0f766e;}
+</style>
+</head>
+<body>
+
+<div class="hairline"></div>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><span class="mark">DI</span> DIALOG Intelligence</a>
+    <div class="nav-links">
+      <a href="studio.html">Studio Floor</a>
+      <a href="pinup.html">Charrette</a>
+      <a href="modelshop.html" class="active">Strategic Hub</a>
+      <a href="library.html">Library</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container" style="text-align:center;">
+    <span class="eyebrow">STRATEGIC HUB — ONE OF THREE ROOMS</span>
+    <h1 id="pageH1">Precedents</h1>
+    <p class="lead" id="pageLead" style="margin-left:auto;margin-right:auto;"></p>
+    <div id="floorplanMount"></div>
+  </div>
+</header>
+
+<div class="shop">
+  <p class="shop-meta"><a href="modelshop.html">&larr; Back to the Strategic Hub</a> &middot; <a href="roadmap.html">Roadmap &rarr;</a> &middot; <a href="ideas.html">Ideas &rarr;</a></p>
+
+  <div class="grow-note" id="growNote"></div>
+
+  <div id="menuView"></div>
+  <div id="detailView" style="display:none;"></div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>A working record that tells the truth about its own state. Knowledge, not people.</span>
+    <span>Drafted by Shadi &amp; Ben, narrated by Claude. &middot; v2026-07-28.2</span>
+  </div>
+</footer>
+
+<script>
+window.NARRATOR = {
+  page: "precedents",
+  lines: [
+    "Feynman. This used to dump BIG's whole profile on you at once. Pick the card now -- same as a desk on the Studio Floor.",
+    "One profile so far: BIG's own path, stage by stage, with the concepts explained as they came up. Real numbers, real quotes, sourced.",
+    "The point of this room isn't to feel behind. It's to see exactly where the gaps are -- and what's actually worth borrowing -- instead of guessing."
+  ],
+  revisit: "Precedents. Same card, still one company deep.",
+  poke: "Careful. These are sourced claims, not vibes."
+};
+</script>
+<script src="assets/floorplan.js"></script>
+<script src="assets/rooms-payload.js"></script>
+<script>
+window.renderFloorplan(document.getElementById("floorplanMount"), "precedents");
+
+(function(){
+  var P = (window.ROOMS_PAYLOAD && window.ROOMS_PAYLOAD.precedents) || {};
+  if (P.h1) document.getElementById("pageH1").textContent = P.h1;
+  if (P.lead) document.getElementById("pageLead").textContent = P.lead;
+  var companies = P.companies || [];
+  document.getElementById("growNote").textContent = "This room is meant to grow. " + companies.length + " compan" + (companies.length === 1 ? "y" : "ies") + " profiled so far — each new one added should update how we read the others, not just sit next to them.";
+
+  function el(tag, cls, html){ var e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; return e; }
+
+  var menuView = document.getElementById("menuView");
+  var detailView = document.getElementById("detailView");
+
+  function renderMenu(){
+    menuView.style.display = ""; detailView.style.display = "none";
+    menuView.innerHTML = "";
+    if (!companies.length){
+      menuView.appendChild(el("p", "section-lead", "No companies profiled yet."));
+      return;
+    }
+    var grid = el("div", "menu-grid");
+    companies.forEach(function(c, i){
+      var card = el("button", "co-card");
+      card.type = "button";
+      var html = "<h3></h3>";
+      if (c.teaser) html += '<p class="cc-teaser"></p>';
+      if (c.useful) html += '<p class="cc-useful"><b>Useful for us: </b><span></span></p>';
+      html += '<p class="cc-foot"></p>';
+      card.innerHTML = html;
+      card.querySelector("h3").textContent = c.name || c.slug;
+      if (c.teaser) card.querySelector(".cc-teaser").textContent = c.teaser;
+      if (c.useful) card.querySelector(".cc-useful span").textContent = c.useful;
+      card.querySelector(".cc-foot").textContent = (c.stages ? c.stages.length + " stages" : "") + (c.source ? " · " + c.source.event : "") + " — open full profile →";
+      card.addEventListener("click", function(){ renderDetail(c); });
+      grid.appendChild(card);
+    });
+    menuView.appendChild(grid);
+  }
+
+  function renderDetail(C){
+    menuView.style.display = "none"; detailView.style.display = "";
+    detailView.innerHTML = "";
+
+    var backRow = el("div", "back-row");
+    var back = el("button", "back-btn", "&larr; All precedents");
+    back.type = "button";
+    back.addEventListener("click", renderMenu);
+    backRow.appendChild(back);
+    detailView.appendChild(backRow);
+
+    var wrap = el("div");
+    detailView.appendChild(wrap);
+
+    wrap.appendChild(el("p", "section-eyebrow", C.eyebrow));
+    wrap.appendChild(el("h2", "section-h2", C.h1));
+    wrap.appendChild(el("p", "section-lead", C.lead));
+
+    if (C.source){
+      var s = C.source;
+      wrap.appendChild(el("div", "source-card",
+        "<b>" + s.event + "</b> &middot; " + s.when + " &middot; " + s.speaker + "<br>" + s.note));
+    }
+
+    (C.stages || []).forEach(function(st){
+      var card = el("div", "stage-card");
+      var top = el("div", "sc-top", '<span class="sc-n">STAGE ' + st.n + '</span><h3></h3><span class="sc-dates"></span>');
+      top.querySelector("h3").textContent = st.name;
+      top.querySelector(".sc-dates").textContent = st.dates;
+      card.appendChild(top);
+
+      var trigger = el("p", "stage-row"); trigger.innerHTML = "<b>The trigger</b><span></span>";
+      trigger.querySelector("span").textContent = st.trigger;
+      card.appendChild(trigger);
+
+      var activity = el("p", "stage-row"); activity.innerHTML = "<b>What they built</b><span></span>";
+      activity.querySelector("span").textContent = st.activity;
+      card.appendChild(activity);
+
+      if (st.concepts && st.concepts.length){
+        var cl = el("ul", "concept-list");
+        st.concepts.forEach(function(c){
+          var li = el("li", "concept-item", "<b></b><span></span>");
+          li.querySelector("b").textContent = c.term;
+          li.querySelector("span").textContent = c.plain;
+          cl.appendChild(li);
+        });
+        card.appendChild(cl);
+      }
+
+      if (st.quote) card.appendChild(el("p", "stage-quote", "&ldquo;" + st.quote + "&rdquo;"));
+
+      var result = el("p", "stage-row"); result.style.marginBottom = "0";
+      result.innerHTML = "<b>What changed</b><span></span>";
+      result.querySelector("span").textContent = st.resultNote;
+      card.appendChild(result);
+
+      wrap.appendChild(card);
+    });
+
+    if (C.numbers && C.numbers.length){
+      wrap.appendChild(el("p", "subhead", "The numbers"));
+      var nWrap = el("div", "numbers-grid");
+      var ul = el("ul");
+      C.numbers.forEach(function(n){ ul.appendChild(el("li", null, n)); });
+      nWrap.appendChild(ul);
+      wrap.appendChild(nWrap);
+    }
+
+    if (C.deepDives && C.deepDives.length){
+      wrap.appendChild(el("p", "subhead", "Worth going deeper on"));
+      C.deepDives.forEach(function(d){
+        var dd = el("div", "deepdive", "<h4></h4><p></p>");
+        dd.querySelector("h4").textContent = d.title;
+        dd.querySelector("p").textContent = d.body;
+        wrap.appendChild(dd);
+      });
+    }
+
+    if (C.governance && C.governance.length){
+      wrap.appendChild(el("p", "subhead", "How they kept it safe"));
+      var gWrap = el("div", "gov-list");
+      var gul = el("ul");
+      C.governance.forEach(function(g){ gul.appendChild(el("li", null, g)); });
+      gWrap.appendChild(gul);
+      wrap.appendChild(gWrap);
+    }
+
+    if (C.openQuestions && C.openQuestions.length){
+      wrap.appendChild(el("p", "subhead", "What even they haven't solved yet"));
+      var qWrap = el("div", "openq-list");
+      var qul = el("ul");
+      C.openQuestions.forEach(function(q){ qul.appendChild(el("li", null, q)); });
+      qWrap.appendChild(qul);
+      wrap.appendChild(qWrap);
+    }
+
+    if (C.sources && C.sources.length){
+      var srcLine = el("p", "sources-line");
+      srcLine.innerHTML = "Sources: " + C.sources.map(function(s){ return '<a href="' + s.u + '" target="_blank" rel="noopener">' + s.t + "</a>"; }).join(" &middot; ");
+      wrap.appendChild(srcLine);
+    }
+
+    var backRow2 = el("div", "back-row");
+    backRow2.style.marginTop = "24px";
+    var back2 = el("button", "back-btn", "&larr; All precedents");
+    back2.type = "button";
+    back2.addEventListener("click", renderMenu);
+    backRow2.appendChild(back2);
+    detailView.appendChild(backRow2);
+  }
+
+  var initial = (location.hash || "").replace(/^#/, "");
+  var initialCompany = initial ? companies.filter(function(c){ return c.slug === initial; })[0] : null;
+  if (initialCompany) renderDetail(initialCompany); else renderMenu();
+})();
+</script>
+<script src="assets/narrator.js"></script>
+
+</body>
+</html>

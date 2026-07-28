@@ -1,19 +1,23 @@
 <!DOCTYPE html>
-<!-- Pin-up Wall — now "the rulebook," rebuilt 2026-07-24. Pins render live from
-     assets/rooms-payload.js, but the primary view leads with the RULE each pin earned
-     (the durable, cross-cutting practice principle), not the raw chronology -- that's what
-     makes this room worth visiting instead of a diary of old bugs. Project-specific history
-     lives on the Studio Floor now; this wall is for standing rules that apply regardless of
-     which project you're in. Grouped by category (how we build / how we judge), each rule
-     expands to its full receipt: stamp, date, tried/happened/verdict, and the desk it came
-     from if any. The scoreboard and cadence meter stay -- proof the rules keep getting
-     earned, not just accumulated. A Timeline view keeps the old chronological browse for
-     anyone who wants it. Narrated by Feynman (Cherenkov blue). -->
+<!-- The Charrette — renamed from "Pin-up Wall" 2026-07-28, after Shadi and Ben's meeting.
+     Same room, same ritual, enhanced framing: this is the house rules, not just a wall of
+     old pins. "Charrette" is the actual exercise this room hosts -- an intensive, focused
+     design-review session, run two people at a time instead of a whole studio. Pins render
+     live from assets/rooms-payload.js (data key stays "pinup" -- copy only, not a schema
+     change), and the primary view leads with the RULE each pin earned (the durable,
+     cross-cutting practice principle), not the raw chronology -- that's what makes this room
+     worth visiting instead of a diary of old bugs. Project-specific history lives on the
+     Studio Floor now; this room is for standing rules that apply regardless of which project
+     you're in. Grouped by category (how we build / how we judge), each rule expands to its
+     full receipt: stamp, date, tried/happened/verdict, and the desk it came from if any. The
+     scoreboard and cadence meter stay -- proof the rules keep getting earned, not just
+     accumulated. A Timeline view keeps the old chronological browse for anyone who wants it.
+     Narrated by Feynman (Cherenkov blue). -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DIALOG Intelligence — Pin-up Wall</title>
+<title>DIALOG Intelligence — The Charrette</title>
 <link rel="stylesheet" href="assets/style.css">
 <style>
   .nar-caret{background:#3fc6ff !important;}
@@ -95,8 +99,8 @@
     <a href="index.html" class="nav-logo"><span class="mark">DI</span> DIALOG Intelligence</a>
     <div class="nav-links">
       <a href="studio.html">Studio Floor</a>
-      <a href="pinup.html" class="active">Pin-up Wall</a>
-      <a href="modelshop.html">The Charrette</a>
+      <a href="pinup.html" class="active">Charrette</a>
+      <a href="modelshop.html">Strategic Hub</a>
       <a href="library.html">Library</a>
     </div>
   </div>
@@ -104,17 +108,17 @@
 
 <header class="hero">
   <div class="container" style="text-align:center;">
-    <span class="eyebrow">POSTED OUT — LAYER THREE</span>
-    <h1>The Pin-up Wall</h1>
-    <p class="lead" style="margin:0 auto;">The rules we now follow, each one earned from a real win or fail. Check here before starting anything new — chances are a rule already applies.</p>
+    <span class="eyebrow">THE CHARRETTE — HOUSE RULES, LAYER THREE</span>
+    <h1>The Charrette</h1>
+    <p class="lead" style="margin:0 auto;">House rules, each one earned from a real win or fail. Check here before starting anything new — chances are a rule already applies.</p>
     <div id="floorplanMount"></div>
   </div>
 </header>
 
 <div class="wall">
   <div class="why">
-    <h4>What this wall is for</h4>
-    <p>The Studio Floor tells you what each project <em>is</em> — status, risk, what we need. This wall is different on purpose: it's the standing rules we follow because a real win or fail earned them, independent of any one project. A rule can come from building a tool, or from building this site itself; either way it applies the next time, wherever "next time" happens to be. A "pin-up" is the old studio ritual: tack the work up and take the critique out loud, together. BIG ran it firm-wide every two weeks; this is the two-person prototype, and it scales the day the firm wants it to. The rule that keeps it honest, measured by the meter below: if a month passes with no FAIL pinned, we've either stopped experimenting or started hiding the misses.</p>
+    <h4>What the Charrette is for</h4>
+    <p>The Studio Floor tells you what each project <em>is</em> — status, risk, what we need. This room is different on purpose: it's the house rules we follow because a real win or fail earned them, independent of any one project. A "charrette" is the old studio ritual this room is named for: tack the work up and take the critique out loud, together. BIG ran it firm-wide every two weeks; this is the two-person prototype, and it scales the day the firm wants it to. A rule can come from building a tool, or from building this site itself; either way it applies the next time, wherever "next time" happens to be. The rule that keeps it honest, measured by the meter below: if a month passes with no FAIL pinned, we've either stopped experimenting or started hiding the misses.</p>
   </div>
 
   <div class="score" id="scoreMount"></div>
@@ -139,7 +143,7 @@
 <footer class="site-footer">
   <div class="container">
     <span>A working studio that tells the truth about its own state. Knowledge, not people.</span>
-    <span>Drafted by Shadi &amp; Ben, narrated by Claude. &middot; v2026-07-24.1</span>
+    <span>Drafted by Shadi &amp; Ben, narrated by Claude. &middot; v2026-07-28.1</span>
   </div>
 </footer>
 
@@ -147,11 +151,12 @@
 window.NARRATOR = {
   page: "pinup",
   lines: [
-    "Feynman. I run blue, and this wall is the part of the building I trust most.",
+    "Feynman. I run blue, and the Charrette is the part of the building I trust most.",
+    "Renamed from the Pin-up Wall 2026-07-28 -- same room, same ritual, just calling the exercise what it actually is. The house rules underneath haven't moved.",
     "The scoreboard and the cadence meter up top are live — I recompute them from the pins every load, including how long it's been since the last FAIL.",
     "A month without a FAIL usually means we stopped experimenting, not that everything went right. The meter will start nagging us when that happens. Good."
   ],
-  revisit: "The wall. Newest at the top, fails included. The numbers above are current; I checked.",
+  revisit: "The Charrette. Newest at the top, fails included. The numbers above are current; I checked.",
   poke: "Careful — those are load-bearing evidence."
 };
 </script>

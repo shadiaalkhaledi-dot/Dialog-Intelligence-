@@ -1,168 +1,46 @@
 <!DOCTYPE html>
-<!-- The Charrette -- rebuilt 2026-07-24 around a real roadmap instead of a flat ideas list.
-     Five sections in sequence: The Playbook (BIG's actual AI adoption story, staged, with
-     concepts explained in place as they were needed -- a real learning module, not a glossary
-     bolted on the side), Where We Actually Are (an honest plot of DIALOG's 8 desks against
-     that same path -- not flattering by default), The Master Plan (the forward roadmap that
-     follows from that gap, replacing the old static ideas list), Our Own Learning Plan (Shadi
-     and Ben's own capability-building plan -- explicitly a living draft, not a plaque), and
-     a short closing list of other directions unrelated to this roadmap (promoted/abandoned).
-     Narrated by Feynman (Cherenkov blue) -- he keeps the list of owed decisions. -->
+<!-- Strategic Hub -- rebuilt 2026-07-28 after Shadi and Ben's meeting. Used to be
+     "Playbook," one long page with six tabs. Split into an antechamber (this page) and
+     three real rooms behind it: Precedents (precedents.html), Roadmap (roadmap.html),
+     Ideas (ideas.html). One door in from the floor plan, three doors out from here --
+     same idiom as the Studio Floor's desks: this page is layer 1, the three rooms behind
+     it are layer 2, off-plan by design. Data key stays "modelshop" for back-compat; the
+     shape changed to {eyebrow,h1,lead,note,doors[]}. Narrated by Feynman. Indigo for the
+     hub itself; each door tinted to match its destination room's own accent (teal /
+     violet / rose) instead of one blanket colour for the whole area. -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DIALOG Intelligence -- The Charrette</title>
+<title>DIALOG Intelligence — Strategic Hub</title>
 <link rel="stylesheet" href="assets/style.css">
 <style>
-  .nar-caret{background:#3fc6ff !important;}
-  .nar-pop{border-left-color:#3fc6ff !important;background:var(--cheren-wash) !important;}
-  .shop{max-width:760px;margin:26px auto 0;padding:0 28px;}
-  .shop-meta{text-align:center;font-size:.84rem;color:var(--ink-faint);margin:0 0 18px;}
+  .nar-caret{background:#6366f1 !important;}
+  .nar-pop{border-left-color:#6366f1 !important;background:#eef2ff !important;}
+  .hub{max-width:820px;margin:26px auto 0;padding:0 24px;}
+  .hub-note{border:1px dashed var(--line);border-radius:var(--radius-sm);padding:16px 20px;margin:0 0 30px;font-size:.88rem;line-height:1.65;color:var(--ink-soft);text-align:center;}
 
-  .section-block{margin:0 0 48px;}
-  .section-eyebrow{font-size:.66rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--cheren-deep);text-align:center;margin:0 0 8px;}
-  .section-h2{font-family:var(--serif);font-weight:600;font-size:1.4rem;text-align:center;margin:0 0 10px;color:#171717;}
-  .section-lead{font-size:.92rem;line-height:1.68;color:var(--ink-soft);text-align:center;max-width:60ch;margin:0 auto 26px;}
+  .doors{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  @media(max-width:720px){.doors{grid-template-columns:1fr;}}
+  .door{display:block;text-decoration:none;background:var(--card);border:1px solid var(--line);border-top-width:3px;border-top-color:#4338ca;border-radius:var(--radius);padding:22px 20px;transition:border-color .15s,box-shadow .2s,transform .2s;}
+  .door:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:#dcdad5;}
+  .door h3{margin:0 0 8px;font-size:1.1rem;color:#171717;}
+  .door p{margin:0 0 14px;font-size:.86rem;line-height:1.6;color:var(--ink-soft);}
+  .door .d-badge{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#4338ca;background:#eef2ff;border-radius:4px;padding:3px 9px;}
+  .door .d-go{display:block;margin-top:14px;font-size:.82rem;font-weight:700;color:#4338ca;}
+  .door.door-precedents{border-top-color:#0f766e;}
+  .door.door-precedents .d-badge{color:#0f766e;background:#e6f7f5;}
+  .door.door-precedents .d-go{color:#0f766e;}
+  .door.door-roadmap{border-top-color:#6d28d9;}
+  .door.door-roadmap .d-badge{color:#6d28d9;background:#f2eeff;}
+  .door.door-roadmap .d-go{color:#6d28d9;}
+  .door.door-ideas{border-top-color:#be123c;}
+  .door.door-ideas .d-badge{color:#be123c;background:#fdf1f3;}
+  .door.door-ideas .d-go{color:#be123c;}
 
-  .source-card{border:1px solid var(--cheren-line);background:var(--cheren-wash);border-radius:var(--radius);padding:14px 18px;margin:0 0 24px;font-size:.86rem;line-height:1.6;color:#33454e;}
-  .source-card b{color:#0b7cb5;}
-
-  .stage-card{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);padding:22px 24px;margin-bottom:16px;}
-  .stage-card .sc-top{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px;}
-  .stage-card .sc-n{font-family:var(--serif);font-size:.78rem;font-weight:700;color:var(--cheren-deep);}
-  .stage-card h3{margin:0;font-size:1.1rem;}
-  .stage-card .sc-dates{font-size:.76rem;color:var(--ink-faint);margin-left:auto;}
-  .stage-row{margin:0 0 12px;font-size:.9rem;line-height:1.65;color:var(--ink-soft);}
-  .stage-row b{display:block;font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:2px;}
-  .stage-quote{font-family:var(--serif);font-style:italic;font-size:.94rem;line-height:1.6;color:#2b2a27;margin:0 0 14px;padding-left:14px;border-left:2px solid var(--cheren-line);}
-  .concept-list{margin:12px 0 0;padding:0;}
-  .concept-item{list-style:none;margin:0 0 10px;padding:10px 12px;background:var(--wash);border-radius:8px;}
-  .concept-item b{display:block;font-size:.82rem;color:#171717;margin-bottom:3px;}
-  .concept-item span{font-size:.84rem;line-height:1.6;color:var(--ink-soft);}
-
-  .numbers-grid, .deepdive-list{margin:0 0 8px;}
-  .numbers-grid ul, .gov-list ul, .openq-list ul{margin:0;padding-left:18px;}
-  .numbers-grid li, .gov-list li, .openq-list li{font-size:.88rem;line-height:1.65;color:var(--ink-soft);margin-bottom:9px;}
-  .deepdive{border:1px dashed var(--line);border-radius:var(--radius-sm);padding:16px 18px;margin-bottom:12px;}
-  .deepdive h4{margin:0 0 6px;font-size:.94rem;}
-  .deepdive p{margin:0;font-size:.88rem;line-height:1.65;color:var(--ink-soft);}
-  .subhead{font-size:.68rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);margin:22px 0 10px;}
-  .subhead:first-child{margin-top:0;}
-  .sources-line{font-size:.78rem;color:var(--ink-faint);margin-top:16px;}
-  .sources-line a{border-bottom-color:var(--cheren);}
-
-  .gap-point{font-size:.92rem;line-height:1.7;color:var(--ink-soft);margin:0 0 14px;padding-left:16px;border-left:2px solid var(--line);}
-  .have-card{border:1px solid var(--win-wash);background:var(--win-wash);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:10px;}
-  .have-card b{display:block;color:var(--win);font-size:.88rem;margin-bottom:3px;}
-  .have-card span{font-size:.85rem;line-height:1.6;color:#2b2a27;}
-
-  .plan-step{border:1px solid var(--line);border-radius:var(--radius-sm);padding:14px 18px;margin-bottom:10px;background:var(--card);}
-  .plan-step .ps-top{display:flex;align-items:baseline;gap:8px;margin-bottom:6px;}
-  .plan-step .ps-name{font-weight:700;font-size:.94rem;color:#2b2a27;}
-  .plan-step p{margin:0;font-size:.86rem;line-height:1.6;color:var(--ink-soft);}
-
-  .learning-card{border:1px solid var(--amber-line);background:var(--amber-wash);border-radius:var(--radius);padding:20px 22px;}
-  .learning-card p{font-size:.9rem;line-height:1.68;color:#3a3833;margin:0 0 14px;}
-  .learning-card ul{margin:0 0 14px;padding-left:18px;}
-  .learning-card li{font-size:.88rem;line-height:1.65;color:#3a3833;margin-bottom:8px;}
-  .learning-note{font-size:.78rem;font-style:italic;color:var(--amber-deep);margin-top:12px;}
-  .calibration-block{border:1px solid var(--amber-line);border-radius:8px;background:#fffcf5;padding:12px 14px;margin:0 0 14px;}
-  .calibration-head{margin:0 0 8px;font-size:.8rem;}
-  .calibration-head b{color:#b45309;}
-  .calibration-head span{color:var(--ink-faint);}
-  .calibration-row{margin:0 0 8px;font-size:.85rem;line-height:1.55;}
-  .calibration-row:last-child{margin-bottom:0;}
-  .calibration-row b{display:block;color:#2b2a27;font-size:.82rem;margin-bottom:2px;}
-  .calibration-row span{color:#5d5a52;}
-  .learning-goals-label{font-size:.68rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--amber-deep);margin:14px 0 8px;}
-
-  .model{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px 26px 16px;}
-  .model + .model{margin-top:18px;}
-  .model.dashed{border-style:dashed;}
-  .model h3{margin-bottom:4px;}
-  .model .m-meta{margin-bottom:12px;}
-  .m-row{margin:0 0 11px;font-size:.92rem;line-height:1.68;color:var(--ink-soft);}
-  .m-row b{display:block;font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:2px;}
-
-  .charrette-tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 0 34px;}
-  .tab-btn{font:inherit;font-size:.78rem;font-weight:700;letter-spacing:.01em;padding:8px 16px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink-soft);cursor:pointer;transition:all .15s;}
-  .tab-btn:hover{border-color:var(--cheren-line);color:#171717;}
-  .tab-btn.active{background:var(--cheren-deep);border-color:var(--cheren-deep);color:#fff;}
-
-  .rm-subhead{font-family:var(--serif);font-weight:600;font-size:1.06rem;margin:34px 0 6px;color:#171717;}
-  .rm-subhead:first-of-type{margin-top:0;}
-  .rm-subnote{font-size:.84rem;line-height:1.62;color:var(--ink-soft);margin:0 0 18px;}
-
-  .timeline-row{display:flex;gap:0;margin:0 0 10px;position:relative;}
-  .timeline-item{flex:1;min-width:0;position:relative;padding:0 10px;text-align:center;}
-  .timeline-item::before{content:"";position:absolute;top:9px;left:0;right:0;height:2px;background:var(--line);}
-  .timeline-item:first-child::before{left:50%;}
-  .timeline-item:last-child::before{right:50%;}
-  .timeline-dot{width:18px;height:18px;border-radius:50%;background:var(--cheren);border:3px solid #fff;box-shadow:0 0 0 2px var(--cheren);margin:0 auto 10px;position:relative;z-index:1;}
-  .timeline-n{font-size:.64rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--cheren-deep);margin:0 0 3px;}
-  .timeline-name{font-weight:700;font-size:.86rem;color:#171717;margin:0 0 3px;line-height:1.3;}
-  .timeline-dates{font-size:.72rem;color:var(--ink-faint);margin:0 0 6px;}
-  .timeline-trigger{font-size:.78rem;line-height:1.5;color:var(--ink-soft);}
-
-  .rm-legend{display:flex;flex-wrap:wrap;gap:14px;margin:0 0 18px;font-size:.76rem;color:var(--ink-soft);}
-  .rm-legend span{display:inline-flex;align-items:center;gap:6px;}
-  .rm-legend i{width:10px;height:10px;border-radius:3px;display:inline-block;}
-  .rm-legend i.sw-unexplored{background:#d8dee2;border:1px dashed #9aa5ac;}
-  .rm-legend i.sw-current{background:var(--amber);}
-  .rm-legend i.sw-built{background:var(--cheren);}
-  .rm-legend i.sw-next{background:#fff;border:1px dashed #9aa5ac;}
-  .rm-legend i.sw-opportunity{background:#fff;border:1px dashed var(--amber-deep);}
-
-  .rm-glossary{border:1px dashed var(--line);border-radius:var(--radius-sm);padding:12px 16px;margin:0 0 22px;}
-  .rm-glossary summary{cursor:pointer;font-size:.82rem;font-weight:700;color:#0b7cb5;list-style:none;}
-  .rm-glossary summary::-webkit-details-marker{display:none;}
-  .rm-glossary summary::before{content:"+ ";color:var(--cheren-deep);}
-  .rm-glossary[open] summary::before{content:"– ";}
-  .rm-glossary-list{margin-top:12px;}
-  .rm-glossary-row{margin:0 0 10px;font-size:.82rem;line-height:1.55;}
-  .rm-glossary-row:last-child{margin-bottom:0;}
-  .rm-glossary-row b{display:block;color:#171717;font-size:.8rem;margin-bottom:2px;}
-  .rm-glossary-row span{color:#6b6a63;}
-
-  .rm-story{position:relative;padding-left:28px;margin-top:4px;}
-  .rm-story::before{content:"";position:absolute;left:10px;top:6px;bottom:6px;width:2px;background:var(--line);}
-
-  .rm-story-caption{position:relative;font-size:.8rem;color:#6b6a63;font-style:italic;line-height:1.5;margin:6px 0 12px;}
-  .rm-story-caption::before{content:"";position:absolute;left:-19px;top:9px;width:9px;height:9px;border-radius:50%;background:var(--line);}
-
-  .rm-story-item{display:block;position:relative;box-sizing:border-box;border:1px solid var(--line);border-left-width:4px;border-radius:8px;background:#fff;padding:10px 14px;margin:0 0 12px;}
-  .rm-story-item::before{content:"";position:absolute;left:-22px;top:16px;width:12px;height:12px;border-radius:50%;background:#fff;border:2px solid #9aa5ac;}
-  .rm-story-item > summary{cursor:pointer;list-style:none;display:flex;gap:8px;align-items:baseline;}
-  .rm-story-item > summary::-webkit-details-marker{display:none;}
-  .rm-story-n{font-family:var(--serif);font-weight:700;font-size:.86rem;color:var(--ink-faint);flex:0 0 auto;}
-  .rm-story-head{flex:1;min-width:0;}
-  .rm-story-chip{font-size:.62rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#8a7a52;margin-right:8px;}
-  .rm-story-title{font-weight:700;font-size:.9rem;color:#171717;}
-  .rm-story-body{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);}
-  .rm-story-body p{margin:0 0 8px;font-size:.82rem;line-height:1.55;color:#5d5a52;}
-  .rm-story-body p:last-of-type{margin-bottom:0;}
-  .rm-story-next{font-size:.8rem !important;color:#0b7cb5 !important;}
-  .rm-story-next b{color:#171717;}
-  .rm-story-link{display:inline-block;margin-top:8px;font-size:.78rem;font-weight:700;}
-
-  .rm-story-item.built{border-left-color:var(--cheren-deep);}
-  .rm-story-item.built::before{border-color:var(--cheren-deep);background:var(--cheren-wash);}
-  .rm-story-item.hub{border-left-color:var(--amber-deep);border-left-width:6px;background:var(--amber-wash);}
-  .rm-story-item.hub::before{border-color:var(--amber-deep);background:var(--amber-wash);border-width:3px;}
-  .rm-story-item.next{border-left-color:#9aa5ac;border-style:dashed;background:#fafafa;}
-  .rm-story-item.next::before{border-style:dashed;}
-  .rm-story-item.loop{border-left-color:var(--amber-deep);border-style:dashed;background:#fffcf5;}
-  .rm-story-item.loop::before{border-color:var(--amber-deep);border-style:dashed;}
-  .rm-story-item.opp{border-left-color:var(--amber-deep);background:var(--amber-wash);}
-  .rm-story-item.opp::before{border-color:var(--amber-deep);background:var(--amber-wash);}
-  .rm-story-item.offpath{border-left-color:#4338ca;background:#eef0fd;}
-  .rm-story-item.offpath::before{border-color:#4338ca;background:#eef0fd;}
-  .rm-story-item.offpath .rm-story-chip{color:#4338ca;}
-
-  .rm-jump{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 6px;}
-  .rm-jump button{font:inherit;font-size:.78rem;font-weight:700;padding:7px 14px;border-radius:8px;border:1px solid var(--cheren-line);background:var(--cheren-wash);color:#0b7cb5;cursor:pointer;}
-  .rm-jump button:hover{background:var(--cheren);color:#fff;}
+  .why-block{margin:44px 0 0;padding-top:28px;border-top:1px dashed var(--line);}
+  .why-block h2{font-family:var(--serif);font-weight:600;font-size:1.15rem;text-align:center;margin:0 0 12px;color:#171717;}
+  .why-block p{font-size:.9rem;line-height:1.68;color:var(--ink-soft);text-align:center;max-width:60ch;margin:0 auto 10px;}
 </style>
 </head>
 <body>
@@ -174,8 +52,8 @@
     <a href="index.html" class="nav-logo"><span class="mark">DI</span> DIALOG Intelligence</a>
     <div class="nav-links">
       <a href="studio.html">Studio Floor</a>
-      <a href="pinup.html">Pin-up Wall</a>
-      <a href="modelshop.html" class="active">The Charrette</a>
+      <a href="pinup.html">Charrette</a>
+      <a href="modelshop.html" class="active">Strategic Hub</a>
       <a href="library.html">Library</a>
     </div>
   </div>
@@ -183,37 +61,28 @@
 
 <header class="hero">
   <div class="container" style="text-align:center;">
-    <span class="eyebrow">POSTED OUT -- LAYER THREE</span>
-    <h1 id="pageH1">The Charrette</h1>
+    <span class="eyebrow">STRATEGIC HUB — LAYER ONE</span>
+    <h1 id="pageH1">Strategic Hub</h1>
     <p class="lead" id="pageLead" style="margin-left:auto;margin-right:auto;"></p>
     <div id="floorplanMount"></div>
   </div>
 </header>
 
-<div class="shop">
-  <p class="shop-meta" id="shopMeta"></p>
+<div class="hub">
+  <div class="hub-note" id="hubNote"></div>
+  <div class="doors" id="doorsMount"></div>
 
-  <nav class="charrette-tabs" id="charretteTabs">
-    <button type="button" class="tab-btn" data-tab="map">The Map</button>
-    <button type="button" class="tab-btn" data-tab="playbook">The Playbook</button>
-    <button type="button" class="tab-btn" data-tab="gap">Where We Are</button>
-    <button type="button" class="tab-btn" data-tab="masterplan">Master Plan</button>
-    <button type="button" class="tab-btn" data-tab="learning">Learning Plan</button>
-    <button type="button" class="tab-btn" data-tab="other">Elsewhere</button>
-  </nav>
-
-  <div class="section-block tab-panel" id="mapSection" data-panel="map"></div>
-  <div class="section-block tab-panel" id="playbookSection" data-panel="playbook"></div>
-  <div class="section-block tab-panel" id="gapSection" data-panel="gap"></div>
-  <div class="section-block tab-panel" id="masterplanSection" data-panel="masterplan"></div>
-  <div class="section-block tab-panel" id="learningSection" data-panel="learning"></div>
-  <div class="section-block tab-panel" id="otherSection" data-panel="other"></div>
+  <div class="why-block">
+    <h2>Why one door, three rooms</h2>
+    <p>This used to be one long page called the Playbook -- ground rules, an honest gap analysis, a master plan, a learning plan, and a list of stray ideas, all in six tabs on one scroll. It worked, but it buried three genuinely different jobs under one label: learning from outside precedent, tracking our own state, and holding onto raw ideas that haven't gone anywhere yet.</p>
+    <p>So: one antechamber, three rooms. Precedents grows every time we research another company. Roadmap is ours -- current state, not aspiration. Ideas is allowed to stay messy, because that's what a pin-up wall of sparks actually looks like before something gets built.</p>
+  </div>
 </div>
 
 <footer class="site-footer">
   <div class="container">
     <span>A working record that tells the truth about its own state. Knowledge, not people.</span>
-    <span>Drafted by Shadi &amp; Ben, narrated by Claude. &middot; v2026-07-24.1</span>
+    <span>Drafted by Shadi &amp; Ben, narrated by Claude. &middot; v2026-07-28.1</span>
   </div>
 </footer>
 
@@ -221,12 +90,12 @@
 window.NARRATOR = {
   page: "modelshop",
   lines: [
-    "This room used to be a flat list of someday-ideas. Now it's a sequence: the playbook we learned this from, an honest read of where we actually stand against it, the master plan that follows, and our own standing plan for getting less beginner at this.",
-    "The gap section isn't flattering on purpose. We skipped a few of BIG's stages entirely and jumped toward a harder one at a much smaller scale -- better to say that plainly than pretend otherwise.",
-    "The learning plan at the bottom is a draft, not a plaque. It's supposed to get edited."
+    "This room used to be a flat list of someday-ideas, then a six-tab page called the Playbook. As of today it's three rooms behind one door -- I finally get to stop scrolling to find the part I actually needed.",
+    "Precedents, Roadmap, Ideas. Pick the door you need -- they used to be one page, now each gets room to actually grow.",
+    "Nothing here is new information. It's the same content, organized honestly instead of crammed under six tabs."
   ],
-  revisit: "The charrette. Same five sections -- check the learning plan for what's changed.",
-  poke: "Careful. Concept models take real dents."
+  revisit: "Strategic Hub. Same three doors -- check each room for what's changed.",
+  poke: "It's a hub. It's supposed to be quiet in here."
 };
 </script>
 <script src="assets/floorplan.js"></script>
@@ -235,396 +104,42 @@ window.NARRATOR = {
 window.renderFloorplan(document.getElementById("floorplanMount"), "modelshop");
 
 (function(){
-  var M = (window.ROOMS_PAYLOAD && window.ROOMS_PAYLOAD.modelshop) || {};
-  if (M.h1) document.getElementById("pageH1").textContent = M.h1;
-  if (M.lead) document.getElementById("pageLead").textContent = M.lead;
-  document.getElementById("shopMeta").textContent = "Start with the map -- then dig into whichever tab you actually need.";
+  var R = window.ROOMS_PAYLOAD || {};
+  var H = R.modelshop || {};
+  if (H.h1) document.getElementById("pageH1").textContent = H.h1;
+  if (H.lead) document.getElementById("pageLead").textContent = H.lead;
+  document.getElementById("hubNote").textContent = H.note || "";
 
   function el(tag, cls, html){ var e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; return e; }
 
-  function renderRoadmapStory(container, R){
-    function d(tag, cls, text){ var e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
-
-    var flow = d("div", "rm-story");
-    var n = 0;
-    function nextN(){ n += 1; return n; }
-
-    function stepItem(cls, num, chipText, titleText, noteText, nextStepText, href){
-      var det = document.createElement("details");
-      det.className = "rm-story-item " + (cls || "");
-      var sum = document.createElement("summary");
-      sum.appendChild(d("span", "rm-story-n", num + "."));
-      var head = d("span", "rm-story-head");
-      if (chipText) head.appendChild(d("span", "rm-story-chip", chipText));
-      head.appendChild(d("span", "rm-story-title", titleText));
-      sum.appendChild(head);
-      det.appendChild(sum);
-      var body = d("div", "rm-story-body");
-      if (noteText) body.appendChild(d("p", null, noteText));
-      if (nextStepText){
-        var next = d("p", "rm-story-next");
-        next.innerHTML = "<b>Next: </b>";
-        next.appendChild(document.createTextNode(nextStepText));
-        body.appendChild(next);
-      }
-      if (href){
-        var link = document.createElement("a"); link.href = href; link.className = "rm-story-link";
-        link.textContent = "See its desk on the Studio Floor →";
-        body.appendChild(link);
-      }
-      det.appendChild(body);
-      flow.appendChild(det);
-      return det;
+  function badgeFor(key){
+    if (key === "precedents"){
+      var n = ((R.precedents && R.precedents.companies) || []).length;
+      return n + " compan" + (n === 1 ? "y" : "ies") + " profiled";
     }
-
-    function caption(text){
-      flow.appendChild(d("p", "rm-story-caption", text));
+    if (key === "roadmap"){
+      var rm = R.roadmap && R.roadmap.map;
+      if (!rm) return "";
+      var n = (rm.branches || []).length;
+      return n + "-track roadmap";
     }
-
-    caption("Read top to bottom — one connected story, not separate boxes. Click any step for the full explanation and its real next move.");
-
-    /* -- built near stage 4, converging toward a hub -- */
-    (R.pockets || []).forEach(function(p){
-      if (p.isHub) return;
-      stepItem("built", nextN(), p.status.toUpperCase(), p.label, p.note, p.nextStep, "studio.html#" + p.deskSlug);
-    });
-    var hub = (R.pockets || []).filter(function(p){ return p.isHub; })[0];
-    if (hub){
-      caption("↓ These converge into one hub:");
-      stepItem("hub", nextN(), "HUB", hub.label, hub.note, hub.nextStep, "studio.html#" + hub.deskSlug);
+    if (key === "ideas"){
+      var models = (R.ideas && R.ideas.models) || [];
+      return models.length + " idea" + (models.length === 1 ? "" : "s") + " logged";
     }
-
-    /* -- the master-plan roads ahead, extending from the hub -- */
-    caption("↓ Which leads to the master-plan roads ahead:");
-    var roads = (R.forwardRoads || []).filter(function(r){ return !r.loopsBack; });
-    roads.forEach(function(r){ stepItem("next", nextN(), "NEXT", r.label, r.note, null, null); });
-
-    var loopRoad = (R.forwardRoads || []).filter(function(r){ return r.loopsBack; })[0];
-    if (loopRoad){
-      stepItem("loop", nextN(), "SPLITS OFF", loopRoad.label, loopRoad.note, "Doesn't extend forward like the others — it loops back to close the gap at the next step.", null);
-    }
-
-    /* -- where that loop actually leads: the real project already near stages 1-2 -- */
-    var opp = R.opportunity;
-    if (opp){
-      caption("↓ Which loops back to close the gap here:");
-      stepItem("opp", nextN(), opp.status.toUpperCase(), opp.label, opp.note, opp.nextStep, "studio.html#" + opp.deskSlug);
-    }
-
-    /* -- our own categories, off this particular story entirely -- */
-    if (R.offPath && R.offPath.length){
-      caption((R.offPathLabel || "Three more real projects — not part of this story at all:"));
-      R.offPath.forEach(function(o){
-        stepItem("offpath", nextN(), (o.category || o.status || "").toUpperCase(), o.label, o.note, o.nextStep, "studio.html#" + o.deskSlug);
-      });
-    }
-
-    container.appendChild(flow);
+    return "";
   }
 
-
-  /* ---- 0. The Map ---- */
-  (function(){
-    var R = M.roadmap; if (!R) return;
-    var wrap = document.getElementById("mapSection");
-    wrap.appendChild(el("p", "section-eyebrow", R.eyebrow));
-    wrap.appendChild(el("h2", "section-h2", R.h1));
-    wrap.appendChild(el("p", "section-lead", R.lead));
-
-    /* -- BIG's timeline (this part really is linear -- it happened in order) -- */
-    wrap.appendChild(el("p", "rm-subhead", "BIG's timeline"));
-    wrap.appendChild(el("p", "rm-subnote", R.timelineNote || ""));
-    var stages = (M.inspiration && M.inspiration.stages) || [];
-    if (stages.length){
-      var trow = el("div", "timeline-row");
-      stages.forEach(function(st){
-        var item = el("div", "timeline-item");
-        item.appendChild(el("div", "timeline-dot"));
-        item.appendChild(el("p", "timeline-n", "STAGE " + st.n));
-        item.appendChild(el("p", "timeline-name", st.name));
-        item.appendChild(el("p", "timeline-dates", st.dates || ""));
-        item.appendChild(el("p", "timeline-trigger", st.trigger || ""));
-        trow.appendChild(item);
-      });
-      wrap.appendChild(trow);
-    }
-    var toPlaybook = el("div", "rm-jump");
-    var pbBtn = el("button", null, "Read the full playbook →");
-    pbBtn.type = "button";
-    pbBtn.addEventListener("click", function(){ window.showCharretteTab && window.showCharretteTab("playbook", true); });
-    toPlaybook.appendChild(pbBtn);
-    wrap.appendChild(toPlaybook);
-
-    /* -- Our roadmap (not linear -- branches, a gap, a road that loops back) -- */
-    wrap.appendChild(el("p", "rm-subhead", "Our roadmap"));
-    wrap.appendChild(el("p", "rm-subnote", (R.position && R.position.note) || ""));
-
-    if (R.legend && R.legend.length){
-      var legend = el("div", "rm-legend");
-      R.legend.forEach(function(l){
-        var span = el("span", null, '<i class="sw-' + l.swatch + '"></i><span></span>');
-        span.querySelector("span").textContent = l.text;
-        legend.appendChild(span);
-      });
-      wrap.appendChild(legend);
-    }
-
-    if (R.glossary && R.glossary.length){
-      var gloss = el("details", "rm-glossary");
-      gloss.appendChild(el("summary", null, "New to some of these words? Tap for plain definitions"));
-      var dl = el("div", "rm-glossary-list");
-      R.glossary.forEach(function(g){
-        var row = el("div", "rm-glossary-row", "<b></b><span></span>");
-        row.querySelector("b").textContent = g.term;
-        row.querySelector("span").textContent = g.def;
-        dl.appendChild(row);
-      });
-      gloss.appendChild(dl);
-      wrap.appendChild(gloss);
-    }
-
-    var rmWrap = el("div", "rm-flow-wrap");
-    wrap.appendChild(rmWrap);
-    renderRoadmapStory(rmWrap, R);
-  })();
-
-  /* ---- 1. The Playbook ---- */
-  (function(){
-    var P = M.inspiration; if (!P) return;
-    var wrap = document.getElementById("playbookSection");
-    wrap.appendChild(el("p", "section-eyebrow", P.eyebrow));
-    wrap.appendChild(el("h2", "section-h2", P.h1));
-    wrap.appendChild(el("p", "section-lead", P.lead));
-
-    if (P.source){
-      var s = P.source;
-      wrap.appendChild(el("div", "source-card",
-        "<b>" + s.event + "</b> &middot; " + s.when + " &middot; " + s.speaker + "<br>" + s.note));
-    }
-
-    (P.stages || []).forEach(function(st){
-      var card = el("div", "stage-card");
-      var top = el("div", "sc-top", '<span class="sc-n">STAGE ' + st.n + '</span><h3></h3><span class="sc-dates"></span>');
-      top.querySelector("h3").textContent = st.name;
-      top.querySelector(".sc-dates").textContent = st.dates;
-      card.appendChild(top);
-
-      var trigger = el("p", "stage-row"); trigger.innerHTML = "<b>The trigger</b><span></span>";
-      trigger.querySelector("span").textContent = st.trigger;
-      card.appendChild(trigger);
-
-      var activity = el("p", "stage-row"); activity.innerHTML = "<b>What they built</b><span></span>";
-      activity.querySelector("span").textContent = st.activity;
-      card.appendChild(activity);
-
-      if (st.concepts && st.concepts.length){
-        var cl = el("ul", "concept-list");
-        st.concepts.forEach(function(c){
-          var li = el("li", "concept-item", "<b></b><span></span>");
-          li.querySelector("b").textContent = c.term;
-          li.querySelector("span").textContent = c.plain;
-          cl.appendChild(li);
-        });
-        card.appendChild(cl);
-      }
-
-      if (st.quote) card.appendChild(el("p", "stage-quote", "&ldquo;" + st.quote + "&rdquo;"));
-
-      var result = el("p", "stage-row"); result.style.marginBottom = "0";
-      result.innerHTML = "<b>What changed</b><span></span>";
-      result.querySelector("span").textContent = st.resultNote;
-      card.appendChild(result);
-
-      wrap.appendChild(card);
-    });
-
-    if (P.numbers && P.numbers.length){
-      wrap.appendChild(el("p", "subhead", "The numbers"));
-      var nWrap = el("div", "numbers-grid");
-      var ul = el("ul");
-      P.numbers.forEach(function(n){ ul.appendChild(el("li", null, n)); });
-      nWrap.appendChild(ul);
-      wrap.appendChild(nWrap);
-    }
-
-    if (P.deepDives && P.deepDives.length){
-      wrap.appendChild(el("p", "subhead", "Worth going deeper on"));
-      P.deepDives.forEach(function(d){
-        var dd = el("div", "deepdive", "<h4></h4><p></p>");
-        dd.querySelector("h4").textContent = d.title;
-        dd.querySelector("p").textContent = d.body;
-        wrap.appendChild(dd);
-      });
-    }
-
-    if (P.governance && P.governance.length){
-      wrap.appendChild(el("p", "subhead", "How they kept it safe"));
-      var gWrap = el("div", "gov-list");
-      var gul = el("ul");
-      P.governance.forEach(function(g){ gul.appendChild(el("li", null, g)); });
-      gWrap.appendChild(gul);
-      wrap.appendChild(gWrap);
-    }
-
-    if (P.openQuestions && P.openQuestions.length){
-      wrap.appendChild(el("p", "subhead", "What even BIG hasn't solved yet"));
-      var qWrap = el("div", "openq-list");
-      var qul = el("ul");
-      P.openQuestions.forEach(function(q){ qul.appendChild(el("li", null, q)); });
-      qWrap.appendChild(qul);
-      wrap.appendChild(qWrap);
-    }
-
-    if (P.sources && P.sources.length){
-      var srcLine = el("p", "sources-line");
-      srcLine.innerHTML = "Sources: " + P.sources.map(function(s){ return '<a href="' + s.u + '" target="_blank" rel="noopener">' + s.t + "</a>"; }).join(" &middot; ");
-      wrap.appendChild(srcLine);
-    }
-  })();
-
-  /* ---- 2. Where We Actually Are ---- */
-  (function(){
-    var G = M.gap; if (!G) return;
-    var wrap = document.getElementById("gapSection");
-    wrap.appendChild(el("p", "section-eyebrow", G.eyebrow));
-    wrap.appendChild(el("h2", "section-h2", G.h1));
-    wrap.appendChild(el("p", "section-lead", G.lead));
-
-    (G.points || []).forEach(function(p){ wrap.appendChild(el("p", "gap-point", p)); });
-
-    if (G.alreadyHave && G.alreadyHave.length){
-      wrap.appendChild(el("p", "subhead", "What we already have, that BIG had to build"));
-      G.alreadyHave.forEach(function(h){
-        var card = el("div", "have-card", "<b></b><span></span>");
-        card.querySelector("b").textContent = h.item;
-        card.querySelector("span").textContent = h.note;
-        wrap.appendChild(card);
-      });
-    }
-  })();
-
-  /* ---- 3. The Master Plan ---- */
-  (function(){
-    var P = M.masterplan; if (!P) return;
-    var wrap = document.getElementById("masterplanSection");
-    wrap.appendChild(el("p", "section-eyebrow", P.eyebrow));
-    wrap.appendChild(el("h2", "section-h2", P.h1));
-    wrap.appendChild(el("p", "section-lead", P.lead));
-
-    (P.steps || []).forEach(function(s, i){
-      var stateClass = s.state === "done" ? "win" : s.state === "here" ? "amber" : "";
-      var step = el("div", "plan-step");
-      var top = el("div", "ps-top", '<span class="tag ' + stateClass + '"></span><span class="ps-name"></span>');
-      top.querySelector(".tag").textContent = s.state;
-      top.querySelector(".ps-name").textContent = (i + 1) + ". " + s.name;
-      step.appendChild(top);
-      step.appendChild(el("p", null, s.text));
-      wrap.appendChild(step);
-    });
-  })();
-
-  /* ---- 4. Our Own Learning Plan ---- */
-  (function(){
-    var L = M.learningPlan; if (!L) return;
-    var wrap = document.getElementById("learningSection");
-    wrap.appendChild(el("p", "section-eyebrow", L.eyebrow));
-    wrap.appendChild(el("h2", "section-h2", L.h1));
-    wrap.appendChild(el("p", "section-lead", L.lead));
-
-    var card = el("div", "learning-card");
-    if (L.honestStart) card.appendChild(el("p", null, L.honestStart));
-
-    if (L.calibration && L.calibration.length){
-      L.calibration.forEach(function(cal){
-        var calWrap = el("div", "calibration-block");
-        var head = el("p", "calibration-head");
-        head.innerHTML = "<b></b><span></span>";
-        head.querySelector("b").textContent = cal.who + "\u2019s calibration";
-        head.querySelector("span").textContent = " \u00b7 " + cal.date;
-        calWrap.appendChild(head);
-        (cal.items || []).forEach(function(it){
-          var row = el("div", "calibration-row", "<b></b><span></span>");
-          row.querySelector("b").textContent = it.topic;
-          row.querySelector("span").textContent = it.level;
-          calWrap.appendChild(row);
-        });
-        card.appendChild(calWrap);
-      });
-    }
-
-    if (L.goals && L.goals.length){
-      var goalsLabel = el("p", "learning-goals-label", "Goals that follow from that");
-      card.appendChild(goalsLabel);
-      var ul = el("ul");
-      L.goals.forEach(function(g){ ul.appendChild(el("li", null, g)); });
-      card.appendChild(ul);
-    }
-    if (L.habit) card.appendChild(el("p", null, L.habit));
-    if (L.note) card.appendChild(el("p", "learning-note", L.note));
-    wrap.appendChild(card);
-  })();
-
-  /* ---- 5. Other directions (unrelated to this roadmap) ---- */
-  (function(){
-    var models = M.models || M.shelves || [];
-    if (!models.length) return;
-    var wrap = document.getElementById("otherSection");
-    wrap.appendChild(el("p", "section-eyebrow", "ELSEWHERE ON THE BOARD"));
-    wrap.appendChild(el("h2", "section-h2", M.otherDirectionsLabel || "Other directions"));
-    if (M.otherDirectionsNote) wrap.appendChild(el("p", "section-lead", M.otherDirectionsNote));
-
-    function tagClass(s){
-      s = (s || "").toLowerCase();
-      if (s.indexOf("progress") >= 0) return "amber";
-      if (s.indexOf("promoted") >= 0) return "win";
-      if (s.indexOf("dead") >= 0 || s.indexOf("retired") >= 0 || s.indexOf("abandoned") >= 0) return "fail";
-      return "";
-    }
-    var LABELS = { proposes: "What it proposes", needs: "What it needs", why: "Where it went" };
-    models.forEach(function(m){
-      var dashed = (m.status || "").toLowerCase().indexOf("progress") < 0;
-      var mEl = el("div", "model" + (dashed ? " dashed" : ""));
-      var html = '<h3></h3><div class="m-meta"><span class="tag ' + tagClass(m.status) + '"></span></div>';
-      ["proposes","needs","why"].forEach(function(k){
-        if (m[k]) html += '<p class="m-row ' + k + '"><b>' + LABELS[k] + '</b><span></span></p>';
-      });
-      mEl.innerHTML = html;
-      mEl.querySelector("h3").textContent = m.name;
-      mEl.querySelector(".m-meta .tag").textContent = m.status || "";
-      ["proposes","needs","why"].forEach(function(k){
-        var row = mEl.querySelector(".m-row." + k + " span");
-        if (row) row.textContent = m[k];
-      });
-      wrap.appendChild(mEl);
-    });
-  })();
-
-  /* ---- Tabs ---- */
-  (function(){
-    var tabsNav = document.getElementById("charretteTabs");
-    var panels = document.querySelectorAll(".tab-panel");
-    var VALID = ["map", "playbook", "gap", "masterplan", "learning", "other"];
-    function showTab(name, push){
-      if (VALID.indexOf(name) < 0) name = "map";
-      var btns = tabsNav.querySelectorAll(".tab-btn");
-      for (var i = 0; i < btns.length; i++) btns[i].classList.toggle("active", btns[i].getAttribute("data-tab") === name);
-      for (var j = 0; j < panels.length; j++) panels[j].style.display = (panels[j].getAttribute("data-panel") === name) ? "" : "none";
-      if (push && location.hash !== "#" + name) history.pushState(null, "", "#" + name);
-    }
-    window.showCharretteTab = showTab;
-    tabsNav.addEventListener("click", function(e){
-      var btn = e.target.closest ? e.target.closest(".tab-btn") : null;
-      if (!btn) return;
-      showTab(btn.getAttribute("data-tab"), true);
-    });
-    window.addEventListener("popstate", function(){
-      var h = (location.hash || "#map").replace(/^#/, "");
-      showTab(h, false);
-    });
-    var initial = (location.hash || "#map").replace(/^#/, "");
-    showTab(initial, false);
-  })();
-
+  var doors = H.doors || [];
+  var mount = document.getElementById("doorsMount");
+  doors.forEach(function(dr){
+    var a = document.createElement("a"); a.className = "door door-" + dr.key; a.href = dr.href;
+    a.innerHTML = '<h3></h3><p></p><span class="d-badge"></span><span class="d-go">Open ' + dr.label + ' &rarr;</span>';
+    a.querySelector("h3").textContent = dr.label;
+    a.querySelector("p").textContent = dr.desc;
+    a.querySelector(".d-badge").textContent = badgeFor(dr.key);
+    mount.appendChild(a);
+  });
 })();
 </script>
 <script src="assets/narrator.js"></script>
